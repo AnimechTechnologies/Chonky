@@ -66,8 +66,8 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/material": "^5.14.14",
-    "@mui/styles": "^5.14.14",
+    "@mui/material": "^5.15.0",
+    "@mui/styles": "^5.15.0",
     "@reduxjs/toolkit": "^2.0.1",
     "@types/classnames": "^2.2.11",
     "@types/fuzzy-search": "^2.1.3",
