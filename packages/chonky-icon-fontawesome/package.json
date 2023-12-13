@@ -1,5 +1,5 @@
 {
-  "name": "@aperturerobotics/chonky-icon-fontawesome",
+  "name": "@animech-public/chonky-icon-fontawesome",
   "version": "0.2.7",
   "description": "FontAwesome icon component for Chonky file browser",
   "license": "MIT",
@@ -62,7 +62,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@aperturerobotics/chonky": "^0.2.7",
+    "@animech-public/chonky": "^0.2.7",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-brands-svg-icons": "6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
@@ -76,7 +76,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TimboKZ/Chonky.git"
+    "url": "git+https://github.com/AnimechTechnologies/Chonky.git"
   },
   "bugs": {
     "url": "https://github.com/TimboKZ/Chonky/issues"
