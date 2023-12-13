@@ -5,7 +5,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { IntlProvider } from 'react-intl';
 import { ThemeProvider } from 'react-jss';
 import { Provider as ReduxProvider } from 'react-redux';
-import shortid from 'shortid';
+import { nanoid } from 'nanoid';
 import {
   createTheme,
   ThemeProvider as MuiThemeProvider,
@@ -49,7 +49,7 @@ export const FileBrowser = React.forwardRef<FileBrowserHandle, FileBrowserProps 
     const i18n = getValueOrFallback(props.i18n, defaultConfig.i18n);
     const formatters = useMemo(() => ({ ...defaultFormatters, ...i18n?.formatters }), [i18n]);
 
-    const chonkyInstanceId = useStaticValue(() => instanceId ?? shortid.generate());
+    const chonkyInstanceId = useStaticValue(() => instanceId ?? nanoid());
     const store = useChonkyStore(chonkyInstanceId);
 
     const isMobileBreakpoint = useIsMobileBreakpoint();
