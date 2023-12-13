@@ -1,6 +1,6 @@
 {
   "name": "@animech-public/chonky-icon-fontawesome",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "FontAwesome icon component for Chonky file browser",
   "license": "MIT",
   "main": "dist/index.js",
