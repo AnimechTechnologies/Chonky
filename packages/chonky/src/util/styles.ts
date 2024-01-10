@@ -66,6 +66,7 @@ export const lightTheme = {
     iconColor: '#fff',
     borderRadius: 5,
     fontSize: 14,
+    textWrap: 'wrap',
 
     fileColorTint: 'rgba(255, 255, 255, 0.4)',
     folderBackColorTint: 'rgba(255, 255, 255, 0.1)',

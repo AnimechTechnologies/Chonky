@@ -45,6 +45,9 @@ const useFileEntryStyles = makeLocalChonkyStyles((theme) => ({
     wordBreak: 'break-word',
     textAlign: 'center',
     paddingTop: 5,
+    overflow: 'hidden',
+    'text-wrap': theme.gridFileEntry.textWrap,
+    'text-overflow': 'ellipsis',
   },
   gridFileEntryName: {
     backgroundColor: (state: FileEntryState) => (state.selected ? 'rgba(0,153,255, .25)' : 'transparent'),
