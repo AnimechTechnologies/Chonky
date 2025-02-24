@@ -12,7 +12,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 
 import { reduxActions } from '../../redux/reducers';
-import { selectOnSearchInput, selectSearchString } from '../../redux/selectors';
+import { selectOnCancelSearch, selectOnSearchInput, selectSearchString } from '../../redux/selectors';
 import { ChonkyIconName } from '../../types/icons.types';
 import { useDebounce } from '../../util/hooks-helpers';
 import { getI18nId, I18nNamespace } from '../../util/i18n';
@@ -37,6 +37,7 @@ export const ToolbarSearch: React.FC<ToolbarSearchProps> = React.memo(() => {
   const dispatch: ChonkyDispatch = useDispatch();
   const reduxSearchString = useSelector(selectSearchString);
   const reduxOnSearchInput = useSelector(selectOnSearchInput);
+  const reduxOnCancelSearch = useSelector(selectOnCancelSearch);
 
   const [localSearchString, setLocalSearchString] = useState(reduxSearchString);
   const [debouncedLocalSearchString] = useDebounce(localSearchString, 50);
@@ -73,12 +74,13 @@ export const ToolbarSearch: React.FC<ToolbarSearchProps> = React.memo(() => {
       //       intercept KeyPress events with Escape key.
       //       @see https://stackoverflow.com/a/37461974
       if (event.key === 'Escape') {
+        reduxOnCancelSearch?.();
         setLocalSearchString('');
         dispatch(reduxActions.setSearchString(''));
         if (searchInputRef.current) searchInputRef.current.blur();
       }
     },
-    [dispatch],
+    [reduxOnCancelSearch, dispatch],
   );
 
   return (

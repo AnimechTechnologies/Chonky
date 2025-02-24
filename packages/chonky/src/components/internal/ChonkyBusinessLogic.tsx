@@ -71,6 +71,10 @@ export const ChonkyBusinessLogicInner = React.memo(
       reduxActions.onSearchInput,
       getValueOrFallback(props.onSearchInput, defaultConfig.onSearchInput),
     );
+    useDTE(
+      reduxActions.onCancelSearch,
+      getValueOrFallback(props.onCancelSearch, defaultConfig.onCancelSearch),
+    );
 
     // ==== Setup the imperative handle for external use
     useFileBrowserHandle(ref);
