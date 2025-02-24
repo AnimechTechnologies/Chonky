@@ -12,6 +12,7 @@ import { OptionMap } from './options.types';
 import { FileSelection } from './selection.types';
 import { SortOrder } from './sort.types';
 import { ThumbnailGenerator } from './thumbnails.types';
+import { SearchInputCallback } from './search.types';
 
 export type RootState = {
   instanceId: string;
@@ -44,6 +45,7 @@ export type RootState = {
 
   // Search
   focusSearchInput: Nullable<() => void>;
+  onSearchInput: Nullable<SearchInputCallback>;
   searchString: string;
   searchMode: 'currentFolder';
 

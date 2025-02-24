@@ -6,6 +6,7 @@ export type ChonkyConfig = Pick<
   FileBrowserProps,
   | 'fileActions'
   | 'onFileAction'
+  | 'onSearchInput'
   | 'thumbnailGenerator'
   | 'doubleClickDelay'
   | 'disableSelection'
@@ -25,6 +26,7 @@ export type ChonkyConfig = Pick<
 export const defaultConfig: ChonkyConfig = {
   fileActions: null,
   onFileAction: null,
+  onSearchInput: null,
   thumbnailGenerator: null,
   doubleClickDelay: 300,
   disableSelection: false,
@@ -44,7 +46,7 @@ export const defaultConfig: ChonkyConfig = {
 export const setChonkyDefaults = (config: Partial<ChonkyConfig>) => {
   for (const key of Object.keys(defaultConfig)) {
     if (key in config) {
-      defaultConfig[key as keyof ChonkyConfig] = config[key as keyof ChonkyConfig] as any;
+      (defaultConfig as any)[key as keyof ChonkyConfig] = config[key as keyof ChonkyConfig] as any;
     }
   }
 };

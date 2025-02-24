@@ -67,6 +67,10 @@ export const ChonkyBusinessLogicInner = React.memo(
       reduxActions.setClearSelectionOnOutsideClick,
       getValueOrFallback(props.clearSelectionOnOutsideClick, defaultConfig.clearSelectionOnOutsideClick, 'boolean'),
     );
+    useDTE(
+      reduxActions.onSearchInput,
+      getValueOrFallback(props.onSearchInput, defaultConfig.onSearchInput),
+    );
 
     // ==== Setup the imperative handle for external use
     useFileBrowserHandle(ref);

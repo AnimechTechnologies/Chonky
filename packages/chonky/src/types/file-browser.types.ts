@@ -11,6 +11,7 @@ import { I18nConfig } from './i18n.types';
 import { ChonkyIconProps } from './icons.types';
 import { ThumbnailGenerator } from './thumbnails.types';
 import { ChonkyTheme } from '../util/styles';
+import { SearchInputCallback } from './search.types';
 
 /**
  * File browser methods exposed to developers via the `FileBrowser` ref.
@@ -83,6 +84,11 @@ export interface FileBrowserProps {
    * An action handler that will be called every time a file action is dispatched.
    */
   onFileAction?: Nullable<GenericFileActionHandler<ChonkyActionUnion>>;
+
+  /**
+   * A callback that will be called every time the search input element is modified.
+   */
+  onSearchInput?: Nullable<SearchInputCallback>;
 
   /**
    * The function that determines the thumbnail image URL for a file. It gets a file

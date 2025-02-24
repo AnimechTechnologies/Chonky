@@ -15,6 +15,7 @@ import { ThumbnailGenerator } from '../types/thumbnails.types';
 import { FileHelper } from '../util/file-helper';
 import { sanitizeInputArray } from './files-transforms';
 import { initialRootState } from './state';
+import { SearchInputCallback } from '../types/search.types';
 
 const reducers = {
   setExternalFileActionHandler(state: RootState, action: PayloadAction<Nilable<GenericFileActionHandler<FileAction>>>) {
@@ -86,6 +87,9 @@ const reducers = {
   },
   setSearchString(state: RootState, action: PayloadAction<string>) {
     state.searchString = action.payload;
+  },
+  onSearchInput(state: RootState, action: PayloadAction<Nullable<SearchInputCallback>>) {
+    state.onSearchInput = action.payload;
   },
   selectAllFiles(state: RootState) {
     state.fileIds

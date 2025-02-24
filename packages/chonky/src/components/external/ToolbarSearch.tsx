@@ -12,7 +12,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 
 import { reduxActions } from '../../redux/reducers';
-import { selectSearchString } from '../../redux/selectors';
+import { selectOnSearchInput, selectSearchString } from '../../redux/selectors';
 import { ChonkyIconName } from '../../types/icons.types';
 import { useDebounce } from '../../util/hooks-helpers';
 import { getI18nId, I18nNamespace } from '../../util/i18n';
@@ -36,6 +36,7 @@ export const ToolbarSearch: React.FC<ToolbarSearchProps> = React.memo(() => {
 
   const dispatch: ChonkyDispatch = useDispatch();
   const reduxSearchString = useSelector(selectSearchString);
+  const reduxOnSearchInput = useSelector(selectOnSearchInput);
 
   const [localSearchString, setLocalSearchString] = useState(reduxSearchString);
   const [debouncedLocalSearchString] = useDebounce(localSearchString, 50);
@@ -58,9 +59,13 @@ export const ToolbarSearch: React.FC<ToolbarSearchProps> = React.memo(() => {
   }, [debouncedLocalSearchString, dispatch]);
 
   const handleChange = useCallback((event: React.FormEvent<HTMLInputElement>) => {
+    reduxOnSearchInput?.(event);
+    if (event.isPropagationStopped()) {
+      return;
+    }
     setShowLoadingIndicator(true);
     setLocalSearchString(event.currentTarget.value);
-  }, []);
+  }, [reduxOnSearchInput]);
   const handleKeyUp = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       // Remove focus from the search input field when user presses escape.
