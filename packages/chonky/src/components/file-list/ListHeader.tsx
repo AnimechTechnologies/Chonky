@@ -39,6 +39,8 @@ const useStyles = makeLocalChonkyStyles((theme) => ({
     padding: '10px 4px',
     fontSize: theme.listFileEntry.headerFontSize,
     backgroundColor: 'transparent',
+    overflow: 'hidden',
+    scrollbarGutter: 'stable',
   },
   headerCellProperty: {
     display: 'flex',
