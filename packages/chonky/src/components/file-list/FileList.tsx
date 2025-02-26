@@ -24,6 +24,7 @@ export interface ColumnDefinition {
   flex?: string;
   justifyContent?: string;
   render: ColumnRenderPreset | ColumnRenderFunction;
+  sortActionId?: Nullable<string>;
 }
 
 export interface FileListProps {
@@ -50,9 +51,27 @@ export const FileList: React.FC<FileListProps> = React.memo((props: FileListProp
 
   const defaultColumns = useRef<ColumnDefinition[]>([
     { render: 'icon', flex: '0 0 2em' },
-    { render: 'name', label: 'Name', flex: '1 1 300px', justifyContent: 'start' },
-    { render: 'modDate', label: 'Last Modified', flex: '0 1 10%', justifyContent: 'end' },
-    { render: 'size', label: 'Size', flex: '0 1 10%', justifyContent: 'end' },
+    {
+      render: 'name',
+      label: 'Name',
+      flex: '1 1 300px',
+      justifyContent: 'start',
+      sortActionId: 'sort_files_by_name',
+    },
+    {
+      render: 'modDate',
+      label: 'Last Modified',
+      flex: '0 1 10%',
+      justifyContent: 'end',
+      sortActionId: 'sort_files_by_date',
+    },
+    {
+      render: 'size',
+      label: 'Size',
+      flex: '0 1 10%',
+      justifyContent: 'end',
+      sortActionId: 'sort_files_by_size',
+    },
   ]).current;
 
   // In Chonky v0.x, this field was user-configurable. In Chonky v1.x+, we hardcode
