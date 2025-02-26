@@ -14,11 +14,13 @@ import { DnDFileEntry } from './DnDFileEntry';
 import { useFileClickHandlers } from './FileEntry-hooks';
 import { GridEntry } from './GridEntry';
 import { ListEntry } from './ListEntry';
+import { ColumnDefinition } from './FileList';
 
 export interface SmartFileEntryProps {
   fileId: Nullable<string>;
   displayIndex: number;
   fileViewMode: FileViewMode;
+  columns?: ColumnDefinition[];
 }
 
 const disabledDndState: DndEntryState = {
@@ -27,50 +29,60 @@ const disabledDndState: DndEntryState = {
   dndCanDrop: false,
 };
 
-export const SmartFileEntry: React.FC<SmartFileEntryProps> = React.memo(({ fileId, displayIndex, fileViewMode }) => {
-  const classes = useStyles();
+export const SmartFileEntry: React.FC<SmartFileEntryProps> = React.memo(
+  ({ fileId, displayIndex, fileViewMode, columns }) => {
+    const classes = useStyles();
 
-  // Basic properties
-  const file = useParamSelector(selectFileData, fileId);
-  const selected = useParamSelector(selectIsFileSelected, fileId);
-  const dndDisabled = useSelector(selectIsDnDDisabled);
+    // Basic properties
+    const file = useParamSelector(selectFileData, fileId);
+    const selected = useParamSelector(selectIsFileSelected, fileId);
+    const dndDisabled = useSelector(selectIsDnDDisabled);
 
-  // Clickable wrapper properties
-  const fileClickHandlers = useFileClickHandlers(file, displayIndex);
-  const [focused, setFocused] = useState(false);
-  const clickableWrapperProps: ClickableWrapperProps = {
-    wrapperTag: 'div',
-    passthroughProps: { className: classes.fileEntryClickableWrapper },
-    ...(FileHelper.isClickable(file) ? fileClickHandlers : undefined),
-    setFocused,
-  };
+    // Clickable wrapper properties
+    const fileClickHandlers = useFileClickHandlers(file, displayIndex);
+    const [focused, setFocused] = useState(false);
+    const clickableWrapperProps: ClickableWrapperProps = {
+      wrapperTag: 'div',
+      passthroughProps: { className: classes.fileEntryClickableWrapper },
+      ...(FileHelper.isClickable(file) ? fileClickHandlers : undefined),
+      setFocused,
+    };
 
-  // File entry properties
-  const fileEntryProps: Omit<FileEntryProps, 'dndState'> = {
-    file,
-    selected,
-    focused,
-  };
+    // File entry properties
+    const fileEntryProps: Omit<FileEntryProps, 'dndState'> = {
+      file,
+      selected,
+      focused,
+    };
 
-  let EntryComponent: React.FC<FileEntryProps>;
-  if (fileViewMode === FileViewMode.List) EntryComponent = ListEntry;
-  else if (fileViewMode === FileViewMode.Compact) EntryComponent = CompactEntry;
-  else EntryComponent = GridEntry;
+    let EntryComponent: React.FC<FileEntryProps>;
+    if (fileViewMode === FileViewMode.List) EntryComponent = ListEntry as typeof EntryComponent;
+    else if (fileViewMode === FileViewMode.Compact) EntryComponent = CompactEntry;
+    else EntryComponent = GridEntry;
 
-  return dndDisabled ? (
-    <ClickableWrapper {...clickableWrapperProps}>
-      <EntryComponent {...fileEntryProps} dndState={disabledDndState} />
-    </ClickableWrapper>
-  ) : (
-    <DnDFileEntry file={file}>
-      {(dndState) => (
-        <ClickableWrapper {...clickableWrapperProps}>
-          <EntryComponent {...fileEntryProps} dndState={dndState} />
-        </ClickableWrapper>
-      )}
-    </DnDFileEntry>
-  );
-});
+    return dndDisabled ? (
+      <ClickableWrapper {...clickableWrapperProps}>
+        <EntryComponent
+          {...fileEntryProps}
+          {...(EntryComponent === ListEntry ? { columns } : {})}
+          dndState={disabledDndState}
+        />
+      </ClickableWrapper>
+    ) : (
+      <DnDFileEntry file={file}>
+        {(dndState) => (
+          <ClickableWrapper {...clickableWrapperProps}>
+            <EntryComponent
+              {...fileEntryProps}
+              {...(EntryComponent === ListEntry ? { columns } : {})}
+              dndState={dndState}
+            />
+          </ClickableWrapper>
+        )}
+      </DnDFileEntry>
+    );
+  }
+);
 SmartFileEntry.displayName = 'SmartFileEntry';
 
 const useStyles = makeGlobalChonkyStyles(() => ({

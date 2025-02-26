@@ -78,6 +78,7 @@ export const lightTheme = {
     iconFontSize: '1.1em',
     iconBorderRadius: 5,
     fontSize: 14,
+    headerFontSize: 10,
   },
 };
 
@@ -127,12 +128,12 @@ export const getStripeGradient = (colorOne: string, colorTwo: string) =>
   ')';
 
 export const makeLocalChonkyStyles = <C extends string = string>(
-  styles: ((theme: ChonkyTheme & MuiTheme) => any) | (ChonkyTheme & MuiTheme),
+  styles: ((theme: ChonkyTheme & MuiTheme) => any) | (ChonkyTheme & MuiTheme)
   // @ts-ignore
 ): any => createUseStyles<ChonkyTheme, C>(styles);
 
 export const makeGlobalChonkyStyles = <C extends string = string>(
-  makeStyles: (theme: ChonkyTheme & MuiTheme) => any,
+  makeStyles: (theme: ChonkyTheme & MuiTheme) => any
 ) => {
   const selectorMapping = {};
   const makeGlobalStyles = (theme: ChonkyTheme) => {

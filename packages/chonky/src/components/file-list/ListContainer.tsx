@@ -13,14 +13,17 @@ import { FileViewMode } from '../../types/file-view.types';
 import { useInstanceVariable } from '../../util/hooks-helpers';
 import { makeLocalChonkyStyles } from '../../util/styles';
 import { SmartFileEntry } from './FileEntry';
+import { ListHeader } from './ListHeader';
+import { ColumnDefinition } from './FileList';
 
 export interface FileListListProps {
   width: number;
   height: number;
+  columns: ColumnDefinition[];
 }
 
 export const ListContainer: React.FC<FileListListProps> = React.memo((props) => {
-  const { width, height } = props;
+  const { width, height, columns } = props;
 
   const viewConfig = useSelector(selectFileViewConfig);
 
@@ -30,7 +33,7 @@ export const ListContainer: React.FC<FileListListProps> = React.memo((props) => 
   const displayFileIdsRef = useInstanceVariable(displayFileIds);
   const getItemKey = useCallback(
     (index: number) => displayFileIdsRef.current[index] ?? `loading-file-${index}`,
-    [displayFileIdsRef],
+    [displayFileIdsRef]
   );
 
   const classes = useStyles();
@@ -43,23 +46,27 @@ export const ListContainer: React.FC<FileListListProps> = React.memo((props) => 
             fileId={displayFileIds[data.index] ?? null}
             displayIndex={data.index}
             fileViewMode={FileViewMode.List}
+            columns={columns}
           />
         </div>
       );
     };
 
     return (
-      <FixedSizeList
-        ref={listRef as any}
-        className={classes.listContainer}
-        itemSize={viewConfig.entryHeight}
-        height={height}
-        itemCount={displayFileIds.length}
-        width={width}
-        itemKey={getItemKey}
-      >
-        {rowRenderer}
-      </FixedSizeList>
+      <>
+        <ListHeader width={width} columns={columns} />
+        <FixedSizeList
+          ref={listRef as any}
+          className={classes.listContainer}
+          itemSize={viewConfig.entryHeight}
+          height={height}
+          itemCount={displayFileIds.length}
+          width={width}
+          itemKey={getItemKey}
+        >
+          {rowRenderer}
+        </FixedSizeList>
+      </>
     );
   }, [classes.listContainer, viewConfig.entryHeight, height, displayFileIds, width, getItemKey]);
 
@@ -68,6 +75,11 @@ export const ListContainer: React.FC<FileListListProps> = React.memo((props) => 
 
 const useStyles = makeLocalChonkyStyles((theme) => ({
   listContainer: {
+    // height: 'auto !important',
     borderTop: `solid 1px ${theme.palette.divider}`,
+  },
+  row: {
+    display: 'flex',
+    alignItems: 'center',
   },
 }));

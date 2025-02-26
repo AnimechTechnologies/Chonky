@@ -1,4 +1,4 @@
-import React, { UIEvent, useCallback, useContext, useMemo } from 'react';
+import React, { UIEvent, useCallback, useContext, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
@@ -12,9 +12,23 @@ import { c, getStripeGradient, makeGlobalChonkyStyles, makeLocalChonkyStyles } f
 import { FileListEmpty } from './FileListEmpty';
 import { GridContainer } from './GridContainer';
 import { ListContainer } from './ListContainer';
+import { FileData } from '../../types/file.types';
+import { Nullable } from 'tsdef';
+
+export type ColumnRenderPreset = 'icon' | 'name' | 'modDate' | 'size';
+
+export type ColumnRenderFunction = (file: Nullable<FileData>) => React.ReactNode;
+
+export interface ColumnDefinition {
+  label?: string;
+  flex?: string;
+  justifyContent?: string;
+  render: ColumnRenderPreset | ColumnRenderFunction;
+}
 
 export interface FileListProps {
   onScroll?: (e: UIEvent<HTMLDivElement>) => void;
+  columns?: ColumnDefinition[];
 }
 
 interface StyleState {
@@ -32,7 +46,14 @@ export const FileList: React.FC<FileListProps> = React.memo((props: FileListProp
 
   const localClasses = useLocalStyles(styleState);
   const classes = useStyles(viewConfig);
-  const { onScroll } = props;
+  const { onScroll, columns } = props;
+
+  const defaultColumns = useRef<ColumnDefinition[]>([
+    { render: 'icon', flex: '0 0 2em' },
+    { render: 'name', label: 'Name', flex: '1 1 300px', justifyContent: 'start' },
+    { render: 'modDate', label: 'Last Modified', flex: '0 1 10%', justifyContent: 'end' },
+    { render: 'size', label: 'Size', flex: '0 1 10%', justifyContent: 'end' },
+  ]).current;
 
   // In Chonky v0.x, this field was user-configurable. In Chonky v1.x+, we hardcode
   // this to `true` to simplify configuration. Users can just wrap Chonky in their
@@ -44,12 +65,12 @@ export const FileList: React.FC<FileListProps> = React.memo((props: FileListProp
       if (displayFileIds.length === 0) {
         return <FileListEmpty width={width} height={viewConfig.entryHeight} />;
       } else if (viewConfig.mode === FileViewMode.List) {
-        return <ListContainer width={width} height={height} />;
+        return <ListContainer width={width} height={height} columns={columns ?? defaultColumns} />;
       } else {
         return <GridContainer width={width} height={height} />;
       }
     },
-    [displayFileIds, viewConfig],
+    [columns, displayFileIds, viewConfig]
   );
 
   const ChonkyIcon = useContext(ChonkyIconContext);
