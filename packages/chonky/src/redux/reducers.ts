@@ -142,6 +142,9 @@ const reducers = {
   setThumbnailGenerator(state: RootState, action: PayloadAction<Nullable<ThumbnailGenerator>>) {
     state.thumbnailGenerator = action.payload;
   },
+  setSortCollator(state: RootState, action: PayloadAction<Nullable<Intl.Collator>>) {
+    state.sortCollator = action.payload;
+  },
   setDoubleClickDelay(state: RootState, action: PayloadAction<number>) {
     state.doubleClickDelay = action.payload;
   },

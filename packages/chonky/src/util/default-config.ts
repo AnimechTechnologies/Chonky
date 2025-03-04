@@ -9,6 +9,7 @@ export type ChonkyConfig = Pick<
   | 'onSearchInput'
   | 'onCancelSearch'
   | 'thumbnailGenerator'
+  | 'sortCollator'
   | 'doubleClickDelay'
   | 'disableSelection'
   | 'disableDefaultFileActions'

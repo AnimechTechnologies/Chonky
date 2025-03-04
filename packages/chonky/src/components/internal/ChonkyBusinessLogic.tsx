@@ -47,6 +47,7 @@ export const ChonkyBusinessLogicInner = React.memo(
       reduxActions.setThumbnailGenerator,
       getValueOrFallback(props.thumbnailGenerator, defaultConfig.thumbnailGenerator),
     );
+    useDTE(reduxActions.setSortCollator, getValueOrFallback(props.sortCollator, defaultConfig.sortCollator));
     useDTE(
       reduxActions.setDoubleClickDelay,
       getValueOrFallback(props.doubleClickDelay, defaultConfig.doubleClickDelay, 'number'),
@@ -67,14 +68,8 @@ export const ChonkyBusinessLogicInner = React.memo(
       reduxActions.setClearSelectionOnOutsideClick,
       getValueOrFallback(props.clearSelectionOnOutsideClick, defaultConfig.clearSelectionOnOutsideClick, 'boolean'),
     );
-    useDTE(
-      reduxActions.onSearchInput,
-      getValueOrFallback(props.onSearchInput, defaultConfig.onSearchInput),
-    );
-    useDTE(
-      reduxActions.onCancelSearch,
-      getValueOrFallback(props.onCancelSearch, defaultConfig.onCancelSearch),
-    );
+    useDTE(reduxActions.onSearchInput, getValueOrFallback(props.onSearchInput, defaultConfig.onSearchInput));
+    useDTE(reduxActions.onCancelSearch, getValueOrFallback(props.onCancelSearch, defaultConfig.onCancelSearch));
 
     // ==== Setup the imperative handle for external use
     useFileBrowserHandle(ref);

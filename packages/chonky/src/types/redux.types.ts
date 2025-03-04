@@ -66,6 +66,7 @@ export type RootState = {
 
   // Other settings
   thumbnailGenerator: Nullable<ThumbnailGenerator>;
+  sortCollator: Nullable<Intl.Collator>;
   doubleClickDelay: number;
   disableDragAndDrop: boolean;
   clearSelectionOnOutsideClick: boolean;

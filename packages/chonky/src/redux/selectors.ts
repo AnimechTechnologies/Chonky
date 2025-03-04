@@ -1,4 +1,4 @@
-import { sort } from 'fast-sort';
+import { IComparer, sort } from 'fast-sort';
 import FuzzySearch from 'fuzzy-search';
 import { Nilable, Nullable } from 'tsdef';
 
@@ -101,6 +101,7 @@ const getSortActionId = (state: RootState) => state.sortActionId;
 const getSortOrder = (state: RootState) => state.sortOrder;
 const getSearchString = (state: RootState) => state.searchString;
 const _getLastClick = (state: RootState) => state.lastClick;
+const getSortCollator = (state: RootState) => state.sortCollator;
 
 // Memoized selectors
 const makeGetAction = (fileActionSelector: (state: RootState) => Nullable<string>) =>
@@ -124,11 +125,12 @@ const getSortedFileIds = createSelector(
   [
     getFileIds,
     getSortOrder,
+    getSortCollator,
     makeGetFiles(getFileIds),
     makeGetAction(getSortActionId),
     makeGetOptionValue(OptionIds.ShowFoldersFirst, false),
   ],
-  (fileIds, sortOrder, files, sortAction, showFolderFirst) => {
+  (fileIds, sortOrder, sortCollator, files, sortAction, showFolderFirst) => {
     if (!sortAction) {
       // We allow users to set the sort action ID to `null` if they want to use their
       // own sorting mechanisms instead of relying on Chonky built-in sort.
@@ -140,6 +142,7 @@ const getSortedFileIds = createSelector(
     const sortFunctions: {
       asc?: (file: FileData) => any;
       desc?: (file: FileData) => any;
+      comparer?: IComparer;
     }[] = [];
 
     if (showFolderFirst) {
@@ -153,6 +156,7 @@ const getSortedFileIds = createSelector(
       const configKeyName = sortOrder === SortOrder.ASC ? 'asc' : 'desc';
       sortFunctions.push({
         [configKeyName]: prepareSortKeySelector(sortAction.sortKeySelector),
+        comparer: sortCollator?.compare,
       });
     }
     if (sortFunctions.length === 0) return fileIds;

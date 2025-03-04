@@ -103,6 +103,12 @@ export interface FileBrowserProps {
   thumbnailGenerator?: Nullable<ThumbnailGenerator>;
 
   /**
+   * Collator to use when comparing keys during sorting.
+   * This can be used to achieve language sensitive sorting (or natural sorting).
+   */
+  sortCollator?: Intl.Collator;
+
+  /**
    * Maximum delay between the two clicks in a double click, in milliseconds.
    */
   doubleClickDelay?: number;
