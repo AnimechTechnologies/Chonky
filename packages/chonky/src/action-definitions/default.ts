@@ -92,8 +92,7 @@ export const DefaultActions = {
       name: 'Switch to List',
       toolbar: true,
       icon: ChonkyIconName.list,
-      // iconOnly: true,
-      group: 'Options',
+      iconOnly: true,
     },
   } as const),
   /**
@@ -112,8 +111,7 @@ export const DefaultActions = {
       name: 'Switch to Compact',
       toolbar: true,
       icon: ChonkyIconName.compact,
-      // iconOnly: true,
-      group: 'Options',
+      iconOnly: true,
     },
   } as const),
   /**
@@ -126,8 +124,7 @@ export const DefaultActions = {
       name: 'Switch to Grid',
       toolbar: true,
       icon: ChonkyIconName.smallThumbnail,
-      // iconOnly: true,
-      group: 'Options',
+      iconOnly: true,
     },
   } as const),
   /**
