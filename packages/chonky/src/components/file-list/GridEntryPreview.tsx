@@ -4,7 +4,7 @@
  * @license MIT
  */
 
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Nullable } from 'tsdef';
 
 import { DndEntryState } from '../../types/file-list.types';
@@ -66,8 +66,8 @@ const useFolderStyles = makeLocalChonkyStyles((theme) => ({
     backgroundColor: (state: FileEntryState) => state.color,
     boxShadow: (state: FileEntryState) => {
       let color = theme.gridFileEntry.folderBackColorTint;
-      if (state.focused) color = 'rgba(0, 0, 0, 0.3)';
-      else if (state.selected) color = 'rgba(0, 153, 255, .4)';
+      if (state.focused) color = theme.gridFileEntry.folderBackFocusedColorTint;
+      else if (state.selected) color = theme.gridFileEntry.folderBackSelectedColorTint;
       return `inset ${color} 0 0 0 999px`;
     },
     borderTopLeftRadius: theme.gridFileEntry.borderRadius,
@@ -95,8 +95,8 @@ const useFolderStyles = makeLocalChonkyStyles((theme) => ({
     backgroundColor: (state: FileEntryState) => state.color,
     boxShadow: (state: FileEntryState) => {
       let color = theme.gridFileEntry.folderBackColorTint;
-      if (state.focused) color = 'rgba(0, 0, 0, 0.3)';
-      else if (state.selected) color = 'rgba(0, 153, 255, .4)';
+      if (state.focused) color = theme.gridFileEntry.folderBackFocusedColorTint;
+      else if (state.selected) color = theme.gridFileEntry.folderBackSelectedColorTint;
       return `inset ${color} 0 0 0 999px`;
     },
     borderTopRightRadius: theme.gridFileEntry.borderRadius,
@@ -109,8 +109,8 @@ const useFolderStyles = makeLocalChonkyStyles((theme) => ({
   folderFrontSide: {
     boxShadow: (state: FileEntryState) => {
       const shadows: string[] = [];
-      if (state.focused) shadows.push('inset rgba(0, 0, 0, 1) 0 0 0 3px');
-      if (state.selected) shadows.push('inset rgba(0, 153, 255, .65) 0 0 0 3px');
+      if (state.focused) shadows.push(theme.gridFileEntry.folderFrontFocusedBoxShadow);
+      if (state.selected) shadows.push(theme.gridFileEntry.folderFrontSelectedBoxShadow);
       shadows.push(`inset ${theme.gridFileEntry.folderFrontColorTint} 0 0 0 999px`);
       return shadows.join(', ');
     },
@@ -155,8 +155,8 @@ const useFileStyles = makeLocalChonkyStyles((theme) => ({
   previewFile: {
     boxShadow: (state: FileEntryState) => {
       const shadows: string[] = [];
-      if (state.selected) shadows.push('inset rgba(0,153,255, .65) 0 0 0 3px');
-      if (state.focused) shadows.push('inset rgba(0, 0, 0, 1) 0 0 0 3px');
+      if (state.selected) shadows.push(theme.gridFileEntry.fileSelectedBoxShadow);
+      if (state.focused) shadows.push(theme.gridFileEntry.fileFocusedBoxShadow);
       shadows.push(`inset ${theme.gridFileEntry.fileColorTint} 0 0 0 999px`);
       return shadows.join(', ');
     },
@@ -190,29 +190,16 @@ const useFileStyles = makeLocalChonkyStyles((theme) => ({
   },
 }));
 
-export const useCommonEntryStyles = makeLocalChonkyStyles({
-  selectionIndicator: {
-    display: (state: FileEntryState) => (state.selected ? 'block' : 'none'),
-    background:
-      'repeating-linear-gradient(' +
-      '45deg,' +
-      'rgba(0,153,255,.14),' +
-      'rgba(0,153,255,.14) 10px,' +
-      'rgba(0,153,255,.25) 0,' +
-      'rgba(0,153,255,.25) 20px' +
-      ')',
-    backgroundColor: 'rgba(0, 153, 255, .14)',
-    position: 'absolute',
-    height: '100%',
-    width: '100%',
-    zIndex: 10,
-  },
-  focusIndicator: {
-    display: (state: FileEntryState) => (state.focused ? 'block' : 'none'),
-    boxShadow: 'inset rgba(0, 0, 0, 1) 0 0 0 2px',
-    position: 'absolute',
-    height: '100%',
-    width: '100%',
-    zIndex: 11,
-  },
-} as any);
+export const useCommonEntryStyles = makeLocalChonkyStyles(
+  (theme) =>
+    ({
+      selectionIndicator: {
+        display: (state: FileEntryState) => (state.selected ? 'block' : 'none'),
+        ...theme.fileEntrySelectionIndicator,
+      },
+      focusIndicator: {
+        display: (state: FileEntryState) => (state.focused ? 'block' : 'none'),
+        ...theme.fileEntryFocusIndicator,
+      },
+    }) as any,
+);

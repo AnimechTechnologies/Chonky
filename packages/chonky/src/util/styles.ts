@@ -69,8 +69,14 @@ export const lightTheme = {
     textWrap: 'wrap',
 
     fileColorTint: 'rgba(255, 255, 255, 0.4)',
+    fileFocusedBoxShadow: 'inset rgba(0, 0, 0, 1) 0 0 0 3px',
+    fileSelectedBoxShadow: 'inset rgba(0,153,255, .65) 0 0 0 3px',
     folderBackColorTint: 'rgba(255, 255, 255, 0.1)',
+    folderBackFocusedColorTint: 'rgba(0, 0, 0, 0.3)',
+    folderBackSelectedColorTint: 'rgba(0, 153, 255, .4)',
     folderFrontColorTint: 'rgba(255, 255, 255, 0.4)',
+    folderFrontFocusedBoxShadow: 'inset rgba(0, 0, 0, 1) 0 0 0 3px',
+    folderFrontSelectedBoxShadow: 'inset rgba(0, 153, 255, .65) 0 0 0 3px',
   },
 
   listFileEntry: {
@@ -79,6 +85,30 @@ export const lightTheme = {
     iconBorderRadius: 5,
     fontSize: 14,
     headerFontSize: 10,
+  },
+
+  fileEntrySelectionIndicator: {
+    background:
+      'repeating-linear-gradient(' +
+      '45deg,' +
+      'rgba(0,153,255,.14),' +
+      'rgba(0,153,255,.14) 10px,' +
+      'rgba(0,153,255,.25) 0,' +
+      'rgba(0,153,255,.25) 20px' +
+      ')',
+    backgroundColor: 'rgba(0, 153, 255, .14)',
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    zIndex: 10,
+  },
+
+  fileEntryFocusIndicator: {
+    boxShadow: 'inset rgba(0, 0, 0, 1) 0 0 0 2px',
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    zIndex: 11,
   },
 };
 
@@ -128,12 +158,12 @@ export const getStripeGradient = (colorOne: string, colorTwo: string) =>
   ')';
 
 export const makeLocalChonkyStyles = <C extends string = string>(
-  styles: ((theme: ChonkyTheme & MuiTheme) => any) | (ChonkyTheme & MuiTheme)
+  styles: ((theme: ChonkyTheme & MuiTheme) => any) | (ChonkyTheme & MuiTheme),
   // @ts-ignore
 ): any => createUseStyles<ChonkyTheme, C>(styles);
 
 export const makeGlobalChonkyStyles = <C extends string = string>(
-  makeStyles: (theme: ChonkyTheme & MuiTheme) => any
+  makeStyles: (theme: ChonkyTheme & MuiTheme) => any,
 ) => {
   const selectorMapping = {};
   const makeGlobalStyles = (theme: ChonkyTheme) => {
