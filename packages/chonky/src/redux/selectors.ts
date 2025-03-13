@@ -201,7 +201,7 @@ const getDisplayFileIds = createSelector(
   (sortedFileIds, hiddenFileIdMap) => sortedFileIds.filter((id) => !id || !hiddenFileIdMap[id]),
 );
 const getLastClickIndex = createSelector(
-  [_getLastClick, getSortedFileIds],
+  [_getLastClick, getDisplayFileIds],
   /** Returns the last click index after ensuring it is actually still valid. */
   (lastClick, displayFileIds) => {
     if (
