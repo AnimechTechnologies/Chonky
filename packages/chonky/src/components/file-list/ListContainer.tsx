@@ -15,6 +15,7 @@ import { makeLocalChonkyStyles } from '../../util/styles';
 import { SmartFileEntry } from './FileEntry';
 import { ListHeader } from './ListHeader';
 import { ColumnDefinition } from './FileList';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 export interface FileListListProps {
   width: number;
@@ -33,7 +34,7 @@ export const ListContainer: React.FC<FileListListProps> = React.memo((props) => 
   const displayFileIdsRef = useInstanceVariable(displayFileIds);
   const getItemKey = useCallback(
     (index: number) => displayFileIdsRef.current[index] ?? `loading-file-${index}`,
-    [displayFileIdsRef]
+    [displayFileIdsRef],
   );
 
   const classes = useStyles();
@@ -53,27 +54,49 @@ export const ListContainer: React.FC<FileListListProps> = React.memo((props) => 
     };
 
     return (
-      <>
+      <div className={classes.rootContainer} style={{ width, height }}>
         <ListHeader width={width} columns={columns} />
-        <FixedSizeList
-          ref={listRef as any}
-          className={classes.listContainer}
-          itemSize={viewConfig.entryHeight}
-          height={height}
-          itemCount={displayFileIds.length}
-          width={width}
-          itemKey={getItemKey}
-        >
-          {rowRenderer}
-        </FixedSizeList>
-      </>
+        <div className={classes.autoSizerContainer}>
+          <AutoSizer>
+            {({ width, height }) => (
+              <FixedSizeList
+                ref={listRef as any}
+                className={classes.listContainer}
+                itemSize={viewConfig.entryHeight}
+                height={height}
+                itemCount={displayFileIds.length}
+                width={width}
+                itemKey={getItemKey}
+              >
+                {rowRenderer}
+              </FixedSizeList>
+            )}
+          </AutoSizer>
+        </div>
+      </div>
     );
-  }, [classes.listContainer, viewConfig.entryHeight, height, displayFileIds, width, getItemKey]);
+  }, [
+    classes.rootContainer,
+    classes.autoSizerContainer,
+    classes.listContainer,
+    viewConfig.entryHeight,
+    height,
+    displayFileIds,
+    width,
+    getItemKey,
+  ]);
 
   return listComponent;
 });
 
 const useStyles = makeLocalChonkyStyles((theme) => ({
+  rootContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  autoSizerContainer: {
+    flex: '1 1 auto',
+  },
   listContainer: {
     borderTop: `solid 1px ${theme.palette.divider}`,
     scrollbarGutter: 'stable',
