@@ -25,6 +25,7 @@ export interface ChonkyPresentationLayerProps {
 
 export const ChonkyPresentationLayer: React.FC<ChonkyPresentationLayerProps> = ({ children }) => {
   const dispatch: ChonkyDispatch = useDispatch();
+  const rootRef = React.useRef<HTMLElement>(null);
   const fileActionIds = useSelector(selectFileActionIds);
   const dndDisabled = useSelector(selectIsDnDDisabled);
   const clearSelectionOnOutsideClick = useSelector(selectClearSelectionOnOutsideClick);
@@ -48,7 +49,7 @@ export const ChonkyPresentationLayer: React.FC<ChonkyPresentationLayerProps> = (
   const hotkeyListenerComponents = useMemo(
     () =>
       fileActionIds.map((actionId) => (
-        <HotkeyListener key={`file-action-listener-${actionId}`} fileActionId={actionId} />
+        <HotkeyListener key={`file-action-listener-${actionId}`} fileActionId={actionId} rootRef={rootRef} />
       )),
     [fileActionIds],
   );
@@ -59,7 +60,7 @@ export const ChonkyPresentationLayer: React.FC<ChonkyPresentationLayerProps> = (
   const classes = useStyles();
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
-      <Box className={classes.chonkyRoot} onContextMenu={showContextMenu}>
+      <Box ref={rootRef} tabIndex={0} className={classes.chonkyRoot} onContextMenu={showContextMenu}>
         {!dndDisabled && dndContextAvailable && <DnDFileListDragLayer />}
         {hotkeyListenerComponents}
         {children ? children : null}

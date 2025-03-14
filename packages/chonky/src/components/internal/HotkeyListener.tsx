@@ -15,16 +15,21 @@ import { ChonkyDispatch } from '../../types/redux.types';
 
 export interface HotkeyListenerProps {
   fileActionId: string;
+  rootRef: React.RefObject<HTMLElement>;
 }
 
 export const HotkeyListener: React.FC<HotkeyListenerProps> = React.memo((props) => {
-  const { fileActionId } = props;
+  const { fileActionId, rootRef } = props;
 
   const dispatch: ChonkyDispatch = useDispatch();
   const fileAction = useParamSelector(selectFileActionData, fileActionId);
+  const element = rootRef.current;
 
   useEffect(() => {
     if (!fileAction || !fileAction.hotkeys || fileAction.hotkeys.length === 0) {
+      return;
+    }
+    if (!element) {
       return;
     }
 
@@ -33,9 +38,11 @@ export const HotkeyListener: React.FC<HotkeyListenerProps> = React.memo((props) 
       event.preventDefault();
       dispatch(thunkRequestFileAction(fileAction, undefined));
     };
-    hotkeys(hotkeysStr, hotkeyCallback);
-    return () => hotkeys.unbind(hotkeysStr, hotkeyCallback);
-  }, [dispatch, fileAction]);
+    hotkeys(hotkeysStr, { element }, hotkeyCallback);
+    return () => {
+      hotkeys.unbind(hotkeysStr, hotkeyCallback);
+    };
+  }, [dispatch, fileAction, element]);
 
   return null;
 });
