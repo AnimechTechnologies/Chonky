@@ -32,6 +32,7 @@ export const useContextMenuTrigger = () => {
       if (event.altKey) return;
 
       event.preventDefault();
+      event.stopPropagation();
 
       const triggerFileId = findClosestChonkyFileId(event.target);
       dispatch(
