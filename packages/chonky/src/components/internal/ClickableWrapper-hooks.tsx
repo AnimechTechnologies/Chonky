@@ -39,6 +39,7 @@ export const useClickHandler = (
       if (counter.current.clickCount === 1) {
         if (onSingleClick) {
           event.preventDefault();
+          event.stopPropagation();
           onSingleClick(mouseClickEvent);
         }
         counter.current.clickCount = 1;
@@ -47,6 +48,7 @@ export const useClickHandler = (
       } else if (counter.current.clickCount === 2) {
         if (onDoubleClick) {
           event.preventDefault();
+          event.stopPropagation();
           onDoubleClick(mouseClickEvent);
         }
         if (typeof counter.current.clickTimeout === 'number') {
