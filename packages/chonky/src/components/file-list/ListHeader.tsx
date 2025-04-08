@@ -34,7 +34,11 @@ export const ListHeader: React.FC<FileListHeaderProps> = React.memo((props) => {
           <div
             key={index}
             className={classes.headerCellProperty}
-            onClick={() => onClickColumn(column)}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              onClickColumn(column);
+            }}
             style={{
               flex: column.flex || '0 1 10%',
               justifyContent: column.justifyContent || 'left',
