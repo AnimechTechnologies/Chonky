@@ -30,6 +30,7 @@ export const initialRootState: RootState = {
   focusSearchInput: null,
   onSearchInput: null,
   onCancelSearch: null,
+  searchPredicate: null,
   searchString: '',
   searchMode: 'currentFolder',
 

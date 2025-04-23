@@ -102,6 +102,7 @@ const getSortOrder = (state: RootState) => state.sortOrder;
 const getSearchString = (state: RootState) => state.searchString;
 const _getLastClick = (state: RootState) => state.lastClick;
 const getSortCollator = (state: RootState) => state.sortCollator;
+const getSearchPredicate = (state: RootState) => state.searchPredicate;
 
 // Memoized selectors
 const makeGetAction = (fileActionSelector: (state: RootState) => Nullable<string>) =>
@@ -169,8 +170,13 @@ const getSortedFileIds = createSelector(
   },
 );
 const getSearcher = createSelector(
-  [makeGetFiles(getCleanFileIds)],
-  (cleanFiles) => new FuzzySearch(cleanFiles as FileData[], ['name'], { caseSensitive: false }),
+  [makeGetFiles(getCleanFileIds), getSearchPredicate],
+  (cleanFiles, searchPredicate) => {
+    const files = cleanFiles as FileData[];
+    return searchPredicate
+      ? { search: (needle: string) => files.filter((file) => searchPredicate(needle, file)) }
+      : new FuzzySearch(files, ['name'], { caseSensitive: false });
+  },
 );
 const getSearchFilteredFileIds = createSelector(
   [getCleanFileIds, getSearchString, getSearcher],

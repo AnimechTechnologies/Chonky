@@ -8,6 +8,7 @@ export type ChonkyConfig = Pick<
   | 'onFileAction'
   | 'onSearchInput'
   | 'onCancelSearch'
+  | 'searchPredicate'
   | 'thumbnailGenerator'
   | 'sortCollator'
   | 'doubleClickDelay'
@@ -30,6 +31,7 @@ export const defaultConfig: ChonkyConfig = {
   onFileAction: null,
   onSearchInput: null,
   onCancelSearch: null,
+  searchPredicate: null,
   thumbnailGenerator: null,
   doubleClickDelay: 300,
   disableSelection: false,

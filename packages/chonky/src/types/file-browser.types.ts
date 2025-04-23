@@ -11,7 +11,7 @@ import { I18nConfig } from './i18n.types';
 import { ChonkyIconProps } from './icons.types';
 import { ThumbnailGenerator } from './thumbnails.types';
 import { ChonkyTheme } from '../util/styles';
-import { CancelSearchCallback, SearchInputCallback } from './search.types';
+import { CancelSearchCallback, SearchInputCallback, SearchPredicate } from './search.types';
 
 /**
  * File browser methods exposed to developers via the `FileBrowser` ref.
@@ -94,6 +94,14 @@ export interface FileBrowserProps {
    * A callback that will be called if the user presses `Escape` to reset the search input element.
    */
   onCancelSearch?: Nullable<CancelSearchCallback>;
+
+  /**
+   * A custom predicate that can be used to override the default
+   * logic for finding matches when searching for files.
+   * The default logic uses the "fuzzy-search" library to
+   * test filenames against the current search phrase.
+   */
+  searchPredicate?: Nullable<SearchPredicate>;
 
   /**
    * The function that determines the thumbnail image URL for a file. It gets a file
