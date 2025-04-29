@@ -171,7 +171,7 @@ const useFileStyles = makeLocalChonkyStyles((theme) => ({
   fileIcon: {
     transform: 'translateX(-50%) translateY(-50%)',
     fontSize: theme.gridFileEntry.iconSize,
-    opacity: (state: FileEntryState) => (state.thumbnailElement && !state.focused ? 0 : 1),
+    opacity: (state: FileEntryState) => (state.thumbnailElement ? 0 : 1),
     color: (state: FileEntryState) =>
       state.focused ? theme.gridFileEntry.iconColorFocused : theme.gridFileEntry.iconColor,
     position: 'absolute',
