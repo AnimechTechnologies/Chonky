@@ -11,7 +11,6 @@ import { FileArray, FileIdTrueMap, FileMap } from '../types/file.types';
 import { OptionMap } from '../types/options.types';
 import { RootState } from '../types/redux.types';
 import { SortOrder } from '../types/sort.types';
-import { ThumbnailGenerator } from '../types/thumbnails.types';
 import { FileHelper } from '../util/file-helper';
 import { sanitizeInputArray } from './files-transforms';
 import { initialRootState } from './state';
@@ -141,9 +140,6 @@ const reducers = {
   },
   toggleOption(state: RootState, action: PayloadAction<string>) {
     state.optionMap[action.payload] = !state.optionMap[action.payload];
-  },
-  setThumbnailGenerator(state: RootState, action: PayloadAction<Nullable<ThumbnailGenerator>>) {
-    state.thumbnailGenerator = action.payload;
   },
   setSortCollator(state: RootState, action: PayloadAction<Nullable<Intl.Collator>>) {
     state.sortCollator = action.payload;

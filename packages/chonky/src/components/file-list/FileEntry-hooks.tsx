@@ -1,9 +1,8 @@
-import React, { HTMLProps, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { HTMLProps, useCallback, useContext, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import { Nullable, Undefinable } from 'tsdef';
 
 import { ChonkyActions } from '../../action-definitions/index';
-import { selectThumbnailGenerator } from '../../redux/selectors';
 import { thunkRequestFileAction } from '../../redux/thunks/dispatchers.thunks';
 import { DndEntryState } from '../../types/file-list.types';
 import { FileData } from '../../types/file.types';
@@ -11,7 +10,6 @@ import { ChonkyIconName } from '../../types/icons.types';
 import { ChonkyDispatch } from '../../types/redux.types';
 import { FileHelper } from '../../util/file-helper';
 import { ChonkyIconContext, ColorsDark, ColorsLight, useIconData } from '../../util/icon-helper';
-import { Logger } from '../../util/logger';
 import { TextPlaceholder } from '../external/TextPlaceholder';
 import { KeyboardClickEvent, MouseClickEvent } from '../internal/ClickableWrapper';
 import { FileEntryState } from './GridEntryPreview';
@@ -32,23 +30,23 @@ export const useFileEntryHtmlProps = (file: Nullable<FileData>): HTMLProps<HTMLD
 
 export const useFileEntryState = (file: Nullable<FileData>, selected: boolean, focused: boolean) => {
   const iconData = useIconData(file);
-  const { thumbnailUrl, thumbnailLoading } = useThumbnailUrl(file);
 
   return useMemo<FileEntryState>(() => {
-    const fileColor = thumbnailUrl ? ColorsDark[iconData.colorCode] : ColorsLight[iconData.colorCode];
-    const iconSpin = thumbnailLoading || !file;
-    const icon = thumbnailLoading ? ChonkyIconName.loading : iconData.icon;
+    const thumbnailElement = file?.thumbnailElement ?? null;
+    const fileColor = thumbnailElement ? ColorsDark[iconData.colorCode] : ColorsLight[iconData.colorCode];
+    const iconSpin = !file;
+    const icon = iconData.icon;
 
     return {
       childrenCount: FileHelper.getChildrenCount(file),
       icon: file && file.icon !== undefined ? file.icon : icon,
       iconSpin: iconSpin,
-      thumbnailUrl: thumbnailUrl,
+      thumbnailElement: thumbnailElement,
       color: file && file.color !== undefined ? file.color : fileColor,
       selected: selected,
       focused: !!focused,
     };
-  }, [file, focused, iconData, selected, thumbnailLoading, thumbnailUrl]);
+  }, [file, focused, iconData, selected]);
 };
 
 export const useDndIcon = (dndState: DndEntryState) => {
@@ -112,48 +110,6 @@ export const useFileNameComponent = (file: Nullable<FileData>) => {
       </>
     );
   }, [file]);
-};
-
-export const useThumbnailUrl = (file: Nullable<FileData>) => {
-  const thumbnailGenerator = useSelector(selectThumbnailGenerator);
-  const [thumbnailUrl, setThumbnailUrl] = useState<Nullable<string>>(null);
-  const [thumbnailLoading, setThumbnailLoading] = useState<boolean>(false);
-  const loadingAttempts = useRef(0);
-
-  useEffect(() => {
-    let loadingCancelled = false;
-
-    if (file) {
-      if (thumbnailGenerator) {
-        if (loadingAttempts.current === 0) {
-          setThumbnailLoading(true);
-        }
-        loadingAttempts.current++;
-        Promise.resolve()
-          .then(() => thumbnailGenerator(file))
-          .then((thumbnailUrl: any) => {
-            if (loadingCancelled) return;
-            setThumbnailLoading(false);
-
-            if (thumbnailUrl && typeof thumbnailUrl === 'string') {
-              setThumbnailUrl(thumbnailUrl);
-            }
-          })
-          .catch((error) => {
-            if (!loadingCancelled) setThumbnailLoading(false);
-            Logger.error(`User-defined "thumbnailGenerator" handler threw an error: ${error.message}`);
-          });
-      } else if (file.thumbnailUrl) {
-        setThumbnailUrl(file.thumbnailUrl);
-      }
-    }
-
-    return () => {
-      loadingCancelled = true;
-    };
-  }, [file, setThumbnailUrl, setThumbnailLoading, thumbnailGenerator]);
-
-  return { thumbnailUrl, thumbnailLoading };
 };
 
 export const useFileClickHandlers = (file: Nullable<FileData>, displayIndex: number) => {

@@ -1,6 +1,7 @@
 import { Nullable, Undefinable } from 'tsdef';
 
 import { ChonkyIconName } from './icons.types';
+import { ReactElement } from 'react';
 
 export interface FileData {
   id: string; // (Required) String that uniquely identifies the file
@@ -24,7 +25,7 @@ export interface FileData {
   // Default preview overriding
   color?: string; // Color to use for this file
   icon?: ChonkyIconName | string | any; // Icon to use for this file
-  thumbnailUrl?: string; // Automatically load thumbnail from this URL
+  thumbnailElement?: Nullable<ReactElement>; // Element to use for displaying a thumbnail for this file
   folderChainIcon?: Nullable<ChonkyIconName | string | any>; // Folder chain icon
 
   [property: string]: any; // Any other user-defined property

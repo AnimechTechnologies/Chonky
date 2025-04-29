@@ -9,7 +9,6 @@ import { FileAction } from './action.types';
 import { FileArray } from './file.types';
 import { I18nConfig } from './i18n.types';
 import { ChonkyIconProps } from './icons.types';
-import { ThumbnailGenerator } from './thumbnails.types';
 import { ChonkyTheme } from '../util/styles';
 import { CancelSearchCallback, SearchInputCallback, SearchPredicate } from './search.types';
 
@@ -102,13 +101,6 @@ export interface FileBrowserProps {
    * test filenames against the current search phrase.
    */
   searchPredicate?: Nullable<SearchPredicate>;
-
-  /**
-   * The function that determines the thumbnail image URL for a file. It gets a file
-   * object as the input, and should return a `string` or `null`. It can also
-   * return a promise that resolves into a `string` or `null`.
-   */
-  thumbnailGenerator?: Nullable<ThumbnailGenerator>;
 
   /**
    * Collator to use when comparing keys during sorting.

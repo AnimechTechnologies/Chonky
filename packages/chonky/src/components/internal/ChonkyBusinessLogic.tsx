@@ -43,10 +43,6 @@ export const ChonkyBusinessLogicInner = React.memo(
       getValueOrFallback(props.defaultFileViewActionId, defaultConfig.defaultFileViewActionId, 'string'),
     );
 
-    useDTE(
-      reduxActions.setThumbnailGenerator,
-      getValueOrFallback(props.thumbnailGenerator, defaultConfig.thumbnailGenerator),
-    );
     useDTE(reduxActions.setSortCollator, getValueOrFallback(props.sortCollator, defaultConfig.sortCollator));
     useDTE(
       reduxActions.setDoubleClickDelay,

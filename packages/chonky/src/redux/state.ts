@@ -44,7 +44,6 @@ export const initialRootState: RootState = {
 
   optionMap: {},
 
-  thumbnailGenerator: null,
   sortCollator: null,
   doubleClickDelay: 300,
   disableDragAndDrop: false,

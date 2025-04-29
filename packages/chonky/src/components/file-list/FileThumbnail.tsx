@@ -12,16 +12,13 @@ import { makeGlobalChonkyStyles } from '../../util/styles';
 
 export interface FileThumbnailProps {
   className: string;
-  thumbnailUrl: Nullable<string>;
+  thumbnailElement: Nullable<React.ReactElement>;
 }
 
 export const FileThumbnail: React.FC<FileThumbnailProps> = React.memo((props) => {
-  const { className, thumbnailUrl } = props;
-
-  const thumbnailStyle: React.CSSProperties = thumbnailUrl ? { backgroundImage: `url('${thumbnailUrl}')` } : {};
-
+  const { className, thumbnailElement } = props;
   const classes = useStyles();
-  return <div className={c([className, classes.fileThumbnail])} style={thumbnailStyle} />;
+  return <div className={c([className, classes.fileThumbnail])}>{thumbnailElement}</div>;
 });
 FileThumbnail.displayName = 'FileThumbnail';
 

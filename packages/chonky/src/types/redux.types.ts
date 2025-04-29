@@ -11,7 +11,6 @@ import { FileArray, FileIdTrueMap, FileMap } from './file.types';
 import { OptionMap } from './options.types';
 import { FileSelection } from './selection.types';
 import { SortOrder } from './sort.types';
-import { ThumbnailGenerator } from './thumbnails.types';
 import { CancelSearchCallback, SearchPredicate, SearchInputCallback } from './search.types';
 
 export type RootState = {
@@ -66,7 +65,6 @@ export type RootState = {
   optionMap: OptionMap;
 
   // Other settings
-  thumbnailGenerator: Nullable<ThumbnailGenerator>;
   sortCollator: Nullable<Intl.Collator>;
   doubleClickDelay: number;
   disableDragAndDrop: boolean;

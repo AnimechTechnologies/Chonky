@@ -4,7 +4,7 @@
  * @license MIT
  */
 
-import React, { useContext } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import { Nullable } from 'tsdef';
 
 import { DndEntryState } from '../../types/file-list.types';
@@ -18,7 +18,7 @@ export type FileEntryState = {
   childrenCount: Nullable<number>;
   color: string;
   icon: ChonkyIconName | string;
-  thumbnailUrl: Nullable<string>;
+  thumbnailElement: Nullable<ReactElement>;
   iconSpin: boolean;
   selected: boolean;
   focused: boolean;
@@ -48,7 +48,7 @@ export const GridEntryPreviewFolder: React.FC<FileEntryPreviewProps> = React.mem
           <GridEntryDndIndicator className={fileClasses.dndIndicator} dndState={dndState} />
           <div className={c([fileClasses.fileIcon, folderClasses.fileIcon])}>{entryState.childrenCount}</div>
           <div className={commonClasses.selectionIndicator}></div>
-          <FileThumbnail className={fileClasses.thumbnail} thumbnailUrl={entryState.thumbnailUrl} />
+          <FileThumbnail className={fileClasses.thumbnail} thumbnailElement={entryState.thumbnailElement} />
         </div>
       </div>
     </div>
@@ -145,7 +145,7 @@ export const GridEntryPreviewFile: React.FC<FileEntryPreviewProps> = React.memo(
         <ChonkyIcon icon={entryState.icon} spin={entryState.iconSpin} />
       </div>
       <div className={commonClasses.selectionIndicator}></div>
-      <FileThumbnail className={fileClasses.thumbnail} thumbnailUrl={entryState.thumbnailUrl} />
+      <FileThumbnail className={fileClasses.thumbnail} thumbnailElement={entryState.thumbnailElement} />
     </div>
   );
 });
@@ -171,7 +171,7 @@ const useFileStyles = makeLocalChonkyStyles((theme) => ({
   fileIcon: {
     transform: 'translateX(-50%) translateY(-50%)',
     fontSize: theme.gridFileEntry.iconSize,
-    opacity: (state: FileEntryState) => (state.thumbnailUrl && !state.focused ? 0 : 1),
+    opacity: (state: FileEntryState) => (state.thumbnailElement && !state.focused ? 0 : 1),
     color: (state: FileEntryState) =>
       state.focused ? theme.gridFileEntry.iconColorFocused : theme.gridFileEntry.iconColor,
     position: 'absolute',

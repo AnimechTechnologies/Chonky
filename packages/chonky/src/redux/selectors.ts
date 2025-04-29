@@ -77,7 +77,6 @@ export const selectSortOrder = (state: RootState) => state.sortOrder;
 export const selectOptionMap = (state: RootState) => state.optionMap;
 export const selectOptionValue = (optionId: string) => (state: RootState) => selectOptionMap(state)[optionId];
 
-export const selectThumbnailGenerator = (state: RootState) => state.thumbnailGenerator;
 export const selectDoubleClickDelay = (state: RootState) => state.doubleClickDelay;
 export const selectIsDnDDisabled = (state: RootState) => state.disableDragAndDrop;
 export const selectClearSelectionOnOutsideClick = (state: RootState) => state.clearSelectionOnOutsideClick;
