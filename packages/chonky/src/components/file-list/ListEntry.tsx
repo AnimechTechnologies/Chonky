@@ -29,7 +29,7 @@ export const ListEntry: React.FC<ListEntryProps> = React.memo(({ file, selected,
       entryState,
       dndState,
     }),
-    [dndState, entryState]
+    [dndState, entryState],
   );
   const classes = useStyles(styleState);
   const commonClasses = useCommonEntryStyles(entryState);
@@ -96,7 +96,7 @@ const useStyles = makeLocalChonkyStyles((theme) => ({
         ? dndState.dndCanDrop
           ? theme.dnd.canDropColor
           : theme.dnd.cannotDropColor
-        : entryState.color,
+        : theme.listFileEntry.iconColor ?? entryState.color,
     fontSize: theme.listFileEntry.iconFontSize,
     padding: [2, 4],
   },

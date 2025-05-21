@@ -81,6 +81,7 @@ export const lightTheme = {
 
   listFileEntry: {
     propertyFontSize: 14,
+    iconColor: undefined as string | undefined,
     iconFontSize: '1.1em',
     iconBorderRadius: 5,
     fontSize: 14,
