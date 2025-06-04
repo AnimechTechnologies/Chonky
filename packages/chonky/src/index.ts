@@ -44,8 +44,7 @@ export { defaultFormatters, getI18nId, getActionI18nId, I18nNamespace } from './
 
 export { setChonkyDefaults } from './util/default-config';
 
-export { ChonkyDndFileEntryType } from './types/dnd.types';
-export type ChonkyDndFileEntryItem = import('./types/dnd.types').ChonkyDndFileEntryItem;
+export { ChonkyDndFileEntryType, ChonkyDndFileEntryItem } from './types/dnd.types';
 
 export type FileActionHandler = GenericFileActionHandler<ChonkyActionUnion>;
 export type ChonkyFileActionData = MapFileActionsToData<ChonkyActionUnion>;
