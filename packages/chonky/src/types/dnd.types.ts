@@ -8,8 +8,7 @@ export interface ChonkyDndDropResult {
   dropEffect: 'move' | 'copy';
 }
 
-// any: used to be DragObjectWithType (removed from react-dnd)
-export type ChonkyDndFileEntryItem = any & {
+export type ChonkyDndFileEntryItem<DragObject = any> = DragObject & {
   payload: StartDragNDropPayload;
 };
 export const ChonkyDndFileEntryType = 'dnd-chonky-file-entry';
