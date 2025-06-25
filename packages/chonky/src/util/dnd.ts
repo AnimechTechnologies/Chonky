@@ -41,7 +41,11 @@ export const useFileDrag = (file: Nullable<FileData>) => {
       type: ChonkyDndFileEntryType,
       payload: getDndStartPayload(),
     };
-    dispatch(thunkRequestFileAction(ChonkyActions.StartDragNDrop, item.payload));
+    // NOTE: In our use-case we want to preserve the current selection
+    // when dragging a file, since the current selection may affect what
+    // happens when dropping the file in other parts of our application.
+    // We therefore avoid dispatching ChonkyActions.StartDragNDrop at this point.
+    // dispatch(thunkRequestFileAction(ChonkyActions.StartDragNDrop, item.payload));
     return item;
   }, [dispatch, getDndStartPayload]);
   const onDragEnd = useCallback(
