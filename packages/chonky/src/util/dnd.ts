@@ -23,13 +23,18 @@ export const useFileDrag = (file: Nullable<FileData>) => {
   const fileRef = useInstanceVariable(file);
   const getDndStartPayload = useCallback<() => StartDragNDropPayload>(() => {
     const reduxState = store.getState();
+    // We force non-null type below because by convention, if drag & drop for
+    // this file was possible, it must have been non-null.
+    const draggedFile = fileRef.current!;
+    const currentlySelectedFiles = selectSelectedFiles(reduxState);
+
     return {
       sourceInstanceId: selectInstanceId(reduxState),
       source: selectCurrentFolder(reduxState),
-      // We force non-null type below because by convention, if drag & drop for
-      // this file was possible, it must have been non-null.
-      draggedFile: fileRef.current!,
-      selectedFiles: selectSelectedFiles(reduxState),
+      draggedFile,
+      // In cases where the user starts dragging an unselected file, we want
+      // the drag operation to only treat the dragged file as selected and ignore the other selected files.
+      selectedFiles: currentlySelectedFiles.includes(draggedFile) ? currentlySelectedFiles : [draggedFile],
     };
   }, [store, fileRef]);
 
