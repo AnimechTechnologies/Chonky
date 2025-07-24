@@ -1,15 +1,13 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "homepage": "https://chonky.io/",
   "author": {
     "name": "Timur Kuzhagaliyev",
     "email": "tim.kuzh@gmail.com",
     "url": "https://foxypanda.me/"
-  },
-  "resolutions": {
-    "**/typescript": "5.2.2",
-    "**/immer": "10.0.3"
   }
 }
