@@ -64,10 +64,12 @@ export const useFileMapMethods = <FT extends CustomFileData>(
 ) => {
   const [fileMap, setFileMap] = useState(baseFileMap);
   const [currentFolderId, setCurrentFolderId] = useState(initialFolderId);
+
   const resetFileMap = useCallback(() => {
     setFileMap(baseFileMap);
     setCurrentFolderId(initialFolderId);
   }, [baseFileMap, initialFolderId]);
+
   const moveFiles = useCallback(
     (files: FT[], source: FT, destination: FT) =>
       setFileMap((currentFileMap) => {
@@ -104,14 +106,29 @@ export const useFileMapMethods = <FT extends CustomFileData>(
     [],
   );
 
+  const renameFile = useCallback(
+    (file: FT, targetName: string) =>
+      setFileMap((currentFileMap) => {
+        return {
+          ...currentFileMap,
+          [file.id]: {
+            ...currentFileMap[file.id],
+            name: targetName,
+          },
+        };
+      }),
+    [],
+  );
+
   const methods = useMemo(
     () => ({
       setFileMap,
       setCurrentFolderId,
       resetFileMap,
       moveFiles,
+      renameFile,
     }),
-    [setFileMap, setCurrentFolderId, resetFileMap, moveFiles],
+    [setFileMap, setCurrentFolderId, resetFileMap, moveFiles, renameFile],
   );
   return {
     fileMap,
@@ -132,6 +149,8 @@ export const useFileActionHandler = (methods: FileMethods) => {
         }
       } else if (data.id === ChonkyActions.MoveFiles.id) {
         methods.moveFiles(data.payload.files, data.payload.source!, data.payload.destination);
+      } else if (data.id === ChonkyActions.RenameFile.id) {
+        methods.renameFile(data.payload.file, data.payload.targetName);
       }
     },
     [methods],
