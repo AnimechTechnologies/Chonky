@@ -36,6 +36,7 @@ export const initialRootState: RootState = {
 
   selectionMap: {},
   disableSelection: false,
+  disableSimpleDeselection: false,
 
   fileViewConfig: ChonkyActions.EnableGridView.fileViewConfig,
 
@@ -56,6 +57,6 @@ export const initialRootState: RootState = {
   contextMenuMounted: false,
   contextMenuConfig: null,
 
-  disableRenaming: false,
   renamingFileId: null,
+  disableRenaming: false,
 };

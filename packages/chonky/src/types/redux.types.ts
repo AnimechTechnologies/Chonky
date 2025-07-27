@@ -53,6 +53,7 @@ export type RootState = {
   // Selection
   selectionMap: FileSelection;
   disableSelection: boolean;
+  disableSimpleDeselection: boolean;
 
   // File views
   fileViewConfig: FileViewConfig;
@@ -80,8 +81,8 @@ export type RootState = {
   contextMenuConfig: Nullable<ContextMenuConfig>;
 
   // Renaming
-  disableRenaming: boolean;
   renamingFileId: Nullable<string>;
+  disableRenaming: boolean;
 };
 
 export type ChonkyThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, null, Action<string>>;

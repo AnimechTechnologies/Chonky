@@ -3,6 +3,7 @@ import {
   getFileData,
   getIsFileSelected,
   selectDisableSelection,
+  selectDisableSimpleDeselection,
   selectors,
   selectParentFolder,
   selectSelectionSize,
@@ -56,9 +57,10 @@ export const EssentialActions = {
       } else {
         // We're dealing with a single click
 
-        const lastClick = selectors.getLastClick(getReduxState());
+        const disableSimpleDeselection = selectDisableSimpleDeselection(getReduxState());
         const disableSelection = selectDisableSelection(getReduxState());
         const isFileSelected = getIsFileSelected(getReduxState(), file);
+        const lastClick = selectors.getLastClick(getReduxState());
 
         const isTargetFileEntryName = payload?.target.dataset.chonkyFileEntryName;
         if (isTargetFileEntryName && lastClick?.fileId === fileId && (disableSelection || isFileSelected)) {
@@ -73,9 +75,10 @@ export const EssentialActions = {
           if (payload.ctrlKey) {
             // Multiple selection
             reduxDispatch(
-              reduxActions.toggleSelection({
+              reduxActions.selectFile({
                 fileId: fileId,
                 exclusive: false,
+                toggle: true,
               }),
             );
             reduxDispatch(
@@ -112,9 +115,10 @@ export const EssentialActions = {
               // Since we can't do a range selection, do a
               // multiple selection
               reduxDispatch(
-                reduxActions.toggleSelection({
+                reduxActions.selectFile({
                   fileId: fileId,
                   exclusive: false,
+                  toggle: !disableSimpleDeselection,
                 }),
               );
               reduxDispatch(
@@ -127,9 +131,10 @@ export const EssentialActions = {
           } else {
             // Exclusive selection
             reduxDispatch(
-              reduxActions.toggleSelection({
+              reduxActions.selectFile({
                 fileId: fileId,
                 exclusive: true,
+                toggle: !disableSimpleDeselection,
               }),
             );
             reduxDispatch(
@@ -183,9 +188,10 @@ export const EssentialActions = {
         }
       } else if (payload.spaceKey && FileHelper.isSelectable(payload.file)) {
         reduxDispatch(
-          reduxActions.toggleSelection({
+          reduxActions.selectFile({
             fileId: payload.file.id,
             exclusive: payload.ctrlKey,
+            toggle: !selectDisableSimpleDeselection(getReduxState()),
           }),
         );
       }

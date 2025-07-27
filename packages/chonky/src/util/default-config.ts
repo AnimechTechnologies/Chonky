@@ -12,6 +12,7 @@ export type ChonkyConfig = Pick<
   | 'sortCollator'
   | 'doubleClickDelay'
   | 'disableSelection'
+  | 'disableSimpleDeselection'
   | 'disableDefaultFileActions'
   | 'hideToolbarInfo'
   | 'forceEnableOpenParent'
@@ -34,6 +35,7 @@ export const defaultConfig: ChonkyConfig = {
   searchPredicate: null,
   doubleClickDelay: 300,
   disableSelection: false,
+  disableSimpleDeselection: false,
   disableDefaultFileActions: false,
   forceEnableOpenParent: false,
   hideToolbarInfo: false,

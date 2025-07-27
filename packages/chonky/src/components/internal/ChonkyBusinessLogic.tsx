@@ -37,6 +37,10 @@ export const ChonkyBusinessLogicInner = React.memo(
       reduxActions.setSelectionDisabled,
       getValueOrFallback(props.disableSelection, defaultConfig.disableSelection, 'boolean'),
     );
+    useDTE(
+      reduxActions.setSimpleDeselectionDisabled,
+      getValueOrFallback(props.disableSimpleDeselection, defaultConfig.disableSimpleDeselection, 'boolean'),
+    );
     useDTE(thunkActivateSortAction, getValueOrFallback(props.defaultSortActionId, defaultConfig.defaultSortActionId));
     useDTE(
       thunkUpdateDefaultFileViewActionId,

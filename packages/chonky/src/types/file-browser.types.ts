@@ -131,6 +131,11 @@ export interface FileBrowserProps {
   disableSelection?: boolean;
 
   /**
+   * The flag that disables deselection by simple click on a single selected file.
+   */
+  disableSimpleDeselection?: boolean;
+
+  /**
    * The value that determines what default file actions will be disabled. You can
    * set this to `true` to disable all default file actions, or explicitly pass an
    * array of default file action IDs that you want to disable.
