@@ -96,7 +96,18 @@ export const EssentialActions = {
                 [rangeStart, rangeEnd] = [rangeEnd, rangeStart];
               }
 
-              reduxDispatch(reduxThunks.selectRange({ rangeStart, rangeEnd }));
+              reduxDispatch(
+                reduxThunks.selectRange({
+                  rangeStart,
+                  rangeEnd,
+                }),
+              );
+              reduxDispatch(
+                reduxActions.setLastClickIndex({
+                  index: fileDisplayIndex,
+                  fileId: fileId,
+                }),
+              );
             } else {
               // Since we can't do a range selection, do a
               // multiple selection
