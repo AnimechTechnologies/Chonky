@@ -35,7 +35,7 @@ export const FileEntryName: React.FC<FileEntryNameProps> = React.memo(({ file, r
 
   const stopRenaming = (saveChanges: boolean) => {
     dispatch(reduxActions.stopRenaming());
-    if (saveChanges && file) {
+    if (saveChanges && file && file.name !== renamedValue) {
       dispatch(
         thunkRequestFileAction(ChonkyActions.RenameFile, {
           file,
