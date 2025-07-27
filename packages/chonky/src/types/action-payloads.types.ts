@@ -9,6 +9,7 @@ export interface MouseClickFilePayload {
   ctrlKey: boolean;
   shiftKey: boolean;
   clickType: 'single' | 'double';
+  target: EventTarget;
 }
 
 export interface KeyboardClickFilePayload {
@@ -34,6 +35,8 @@ export type EndDragNDropPayload = StartDragNDropPayload & {
 };
 
 export type MoveFilesPayload = EndDragNDropPayload & { files: FileData[] };
+
+export type RenameFilePayload = { file: FileData; targetName: string };
 
 export type ChangeSelectionPayload = { selection: Set<string> };
 

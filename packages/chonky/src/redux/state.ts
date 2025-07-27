@@ -55,4 +55,7 @@ export const initialRootState: RootState = {
 
   contextMenuMounted: false,
   contextMenuConfig: null,
+
+  disableRenaming: false,
+  renamingFileId: null,
 };

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Nullable } from 'tsdef';
 
-import { selectFileData, selectIsDnDDisabled, selectIsFileSelected } from '../../redux/selectors';
+import { selectFileData, selectIsDnDDisabled, selectIsFileRenaming, selectIsFileSelected } from '../../redux/selectors';
 import { useParamSelector } from '../../redux/store';
 import { DndEntryState, FileEntryProps } from '../../types/file-list.types';
 import { FileViewMode } from '../../types/file-view.types';
@@ -36,7 +36,8 @@ export const SmartFileEntry: React.FC<SmartFileEntryProps> = React.memo(
     // Basic properties
     const file = useParamSelector(selectFileData, fileId);
     const selected = useParamSelector(selectIsFileSelected, fileId);
-    const dndDisabled = useSelector(selectIsDnDDisabled);
+    const renaming = useParamSelector(selectIsFileRenaming, fileId);
+    const dndDisabled = useSelector(selectIsDnDDisabled) || renaming; // Disable DnD when renaming (otherwise it will interfere with input field)
 
     // Clickable wrapper properties
     const fileClickHandlers = useFileClickHandlers(file, displayIndex);
@@ -53,6 +54,7 @@ export const SmartFileEntry: React.FC<SmartFileEntryProps> = React.memo(
       file,
       selected,
       focused,
+      renaming,
     };
 
     let EntryComponent: React.FC<FileEntryProps>;
@@ -81,7 +83,7 @@ export const SmartFileEntry: React.FC<SmartFileEntryProps> = React.memo(
         )}
       </DnDFileEntry>
     );
-  }
+  },
 );
 SmartFileEntry.displayName = 'SmartFileEntry';
 

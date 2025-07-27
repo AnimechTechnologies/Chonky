@@ -14,6 +14,7 @@ export interface FileData {
   isEncrypted?: boolean; // Is encrypted in some way, default: false
   openable?: boolean; // Can be opened, default: true
   selectable?: boolean; // Can be selected, default: true
+  renamable?: boolean; // Can be renamed, default: true
   draggable?: boolean; // Can be dragged, default: true
   droppable?: boolean; // Can have files dropped into it, default: true for folders
   dndOpenable?: boolean; // Can be opened by DnD hover, default: true for folders

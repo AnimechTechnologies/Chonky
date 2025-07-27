@@ -151,6 +151,11 @@ export interface FileBrowserProps {
   disableDragAndDropProvider?: boolean;
 
   /**
+   * The flag that completely disables file renaming functionality.
+   */
+  disableRenaming?: boolean;
+
+  /**
    * The ID of the sort-selector-setting action to activate by default. This field can
    * be used to specify the default sort order in Chonky.
    */

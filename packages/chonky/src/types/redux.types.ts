@@ -78,6 +78,10 @@ export type RootState = {
   // Context menu
   contextMenuMounted: boolean;
   contextMenuConfig: Nullable<ContextMenuConfig>;
+
+  // Renaming
+  disableRenaming: boolean;
+  renamingFileId: Nullable<string>;
 };
 
 export type ChonkyThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, null, Action<string>>;

@@ -28,25 +28,32 @@ export const useFileEntryHtmlProps = (file: Nullable<FileData>): HTMLProps<HTMLD
   }, [file]);
 };
 
-export const useFileEntryState = (file: Nullable<FileData>, selected: boolean, focused: boolean) => {
+export const useFileEntryState = (file: Nullable<FileData>, selected: boolean, focused: boolean, renaming: boolean) => {
   const iconData = useIconData(file);
 
   return useMemo<FileEntryState>(() => {
+    const childrenCount = FileHelper.getChildrenCount(file);
     const thumbnailElement = file?.thumbnailElement ?? null;
-    const fileColor = thumbnailElement ? ColorsDark[iconData.colorCode] : ColorsLight[iconData.colorCode];
+    const icon = file && file.icon !== undefined ? file.icon : iconData.icon;
     const iconSpin = !file;
-    const icon = iconData.icon;
+    const color =
+      file && file.color !== undefined
+        ? file.color
+        : thumbnailElement
+        ? ColorsDark[iconData.colorCode]
+        : ColorsLight[iconData.colorCode];
 
     return {
-      childrenCount: FileHelper.getChildrenCount(file),
-      icon: file && file.icon !== undefined ? file.icon : icon,
-      iconSpin: iconSpin,
-      thumbnailElement: thumbnailElement,
-      color: file && file.color !== undefined ? file.color : fileColor,
-      selected: selected,
-      focused: !!focused,
+      childrenCount,
+      icon,
+      iconSpin,
+      thumbnailElement,
+      color,
+      selected,
+      focused,
+      renaming,
     };
-  }, [file, focused, iconData, selected]);
+  }, [file, selected, focused, renaming, iconData]);
 };
 
 export const useDndIcon = (dndState: DndEntryState) => {
@@ -128,6 +135,7 @@ export const useFileClickHandlers = (file: Nullable<FileData>, displayIndex: num
           altKey: event.altKey,
           ctrlKey: event.ctrlKey,
           shiftKey: event.shiftKey,
+          target: event.target,
         }),
       );
     },

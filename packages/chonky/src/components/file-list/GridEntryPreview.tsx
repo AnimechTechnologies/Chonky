@@ -22,6 +22,7 @@ export type FileEntryState = {
   iconSpin: boolean;
   selected: boolean;
   focused: boolean;
+  renaming: boolean;
 };
 
 export interface FileEntryPreviewProps {

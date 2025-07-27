@@ -17,6 +17,7 @@ import {
   MoveFilesPayload,
   OpenFileContextMenuPayload,
   OpenFilesPayload,
+  RenameFilePayload,
   StartDragNDropPayload,
 } from '../types/action-payloads.types';
 import { ChonkyIconName } from '../types/icons.types';
@@ -36,45 +37,61 @@ export const EssentialActions = {
       __payloadType: {} as MouseClickFilePayload,
     } as const,
     ({ payload, reduxDispatch, getReduxState }) => {
+      const { file, fileDisplayIndex } = payload;
+      const fileId = file.id;
+
       if (payload.clickType === 'double') {
-        if (FileHelper.isOpenable(payload.file)) {
+        if (FileHelper.isOpenable(file)) {
           reduxDispatch(
             thunkRequestFileAction(ChonkyActions.OpenFiles, {
-              targetFile: payload.file,
+              targetFile: file,
 
               // To simulate Windows Explorer and Nautilus behaviour,
               // a double click on a file only opens that file even if
               // there is a selection.
-              files: [payload.file],
+              files: [file],
             }),
           );
         }
       } else {
         // We're dealing with a single click
 
+        const lastClick = selectors.getLastClick(getReduxState());
         const disableSelection = selectDisableSelection(getReduxState());
-        if (FileHelper.isSelectable(payload.file) && !disableSelection) {
+        const isFileSelected = getIsFileSelected(getReduxState(), file);
+
+        const isTargetFileEntryName = payload?.target.dataset.chonkyFileEntryName;
+        if (isTargetFileEntryName && lastClick?.fileId === fileId && (disableSelection || isFileSelected)) {
+          if (FileHelper.isRenamable(file)) {
+            reduxDispatch(
+              reduxActions.startRenaming({
+                fileId: fileId,
+              }),
+            );
+          }
+        } else if (FileHelper.isSelectable(file) && !disableSelection) {
           if (payload.ctrlKey) {
             // Multiple selection
             reduxDispatch(
               reduxActions.toggleSelection({
-                fileId: payload.file.id,
+                fileId: fileId,
                 exclusive: false,
               }),
             );
             reduxDispatch(
               reduxActions.setLastClickIndex({
-                index: payload.fileDisplayIndex,
-                fileId: payload.file.id,
+                index: fileDisplayIndex,
+                fileId: payload.fileId,
               }),
             );
           } else if (payload.shiftKey) {
             // Range selection
-            const lastClickIndex = selectors.getLastClickIndex(getReduxState());
+
+            const lastClickIndex = lastClick?.index;
             if (typeof lastClickIndex === 'number') {
               // We have the index of the previous click
               let rangeStart = lastClickIndex;
-              let rangeEnd = payload.fileDisplayIndex;
+              let rangeEnd = fileDisplayIndex;
               if (rangeStart > rangeEnd) {
                 [rangeStart, rangeEnd] = [rangeEnd, rangeStart];
               }
@@ -85,14 +102,14 @@ export const EssentialActions = {
               // multiple selection
               reduxDispatch(
                 reduxActions.toggleSelection({
-                  fileId: payload.file.id,
+                  fileId: fileId,
                   exclusive: false,
                 }),
               );
               reduxDispatch(
                 reduxActions.setLastClickIndex({
-                  index: payload.fileDisplayIndex,
-                  fileId: payload.file.id,
+                  index: fileDisplayIndex,
+                  fileId: fileId,
                 }),
               );
             }
@@ -100,14 +117,14 @@ export const EssentialActions = {
             // Exclusive selection
             reduxDispatch(
               reduxActions.toggleSelection({
-                fileId: payload.file.id,
+                fileId: fileId,
                 exclusive: true,
               }),
             );
             reduxDispatch(
               reduxActions.setLastClickIndex({
-                index: payload.fileDisplayIndex,
-                fileId: payload.file.id,
+                index: fileDisplayIndex,
+                fileId: fileId,
               }),
             );
           }
@@ -117,8 +134,8 @@ export const EssentialActions = {
           }
           reduxDispatch(
             reduxActions.setLastClickIndex({
-              index: payload.fileDisplayIndex,
-              fileId: payload.file.id,
+              index: fileDisplayIndex,
+              fileId: fileId,
             }),
           );
         }
@@ -217,6 +234,14 @@ export const EssentialActions = {
   MoveFiles: defineFileAction({
     id: 'move_files',
     __payloadType: {} as MoveFilesPayload,
+  } as const),
+  /**
+   * Action that is dispatched when user renames a file,
+   * usually by clicking on the file name of the last selected file.
+   */
+  RenameFile: defineFileAction({
+    id: 'rename_file',
+    __payloadType: {} as RenameFilePayload,
   } as const),
   /**
    * Action that is dispatched when the selection changes for any reason.

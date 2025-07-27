@@ -13,6 +13,7 @@ export interface MouseClickEvent {
   altKey: boolean;
   ctrlKey: boolean;
   shiftKey: boolean;
+  target: EventTarget;
 }
 export type MouseClickEventHandler = (event: MouseClickEvent) => void;
 

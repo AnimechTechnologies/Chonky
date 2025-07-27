@@ -90,6 +90,9 @@ export const selectContextMenuTriggerFile = (state: RootState) => {
   return fileMap[config.triggerFileId] ?? null;
 };
 
+export const selectIsFileRenaming = (fileId: Nullable<string>) => (state: RootState) =>
+  !!fileId && state.renamingFileId === fileId;
+
 // Raw selectors
 const getFileActionMap = (state: RootState) => state.fileActionMap;
 const getOptionMap = (state: RootState) => state.optionMap;
@@ -205,7 +208,7 @@ const getDisplayFileIds = createSelector(
   /** Returns files that will actually be shown to the user. */
   (sortedFileIds, hiddenFileIdMap) => sortedFileIds.filter((id) => !id || !hiddenFileIdMap[id]),
 );
-const getLastClickIndex = createSelector(
+const getLastClick = createSelector(
   [_getLastClick, getDisplayFileIds],
   /** Returns the last click index after ensuring it is actually still valid. */
   (lastClick, displayFileIds) => {
@@ -216,7 +219,7 @@ const getLastClickIndex = createSelector(
     ) {
       return null;
     }
-    return lastClick.index;
+    return lastClick;
   },
 );
 
@@ -238,7 +241,7 @@ export const selectors = {
   getSearchFilteredFileIds,
   getHiddenFileIdMap,
   getDisplayFileIds,
-  getLastClickIndex,
+  getLastClick,
 
   // Parametrized selectors
   makeGetAction,

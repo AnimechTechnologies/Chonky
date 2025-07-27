@@ -12,5 +12,6 @@ export interface FileEntryProps {
   file: Nullable<FileData>;
   selected: boolean;
   focused: boolean;
+  renaming: boolean;
   dndState: DndEntryState;
 }

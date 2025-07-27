@@ -7,9 +7,9 @@ import { useFileEntryHtmlProps, useFileEntryState } from './FileEntry-hooks';
 import { FileEntryName } from './FileEntryName';
 import { FileEntryState, GridEntryPreviewFile, GridEntryPreviewFolder } from './GridEntryPreview';
 
-export const GridEntry: React.FC<FileEntryProps> = React.memo(({ file, selected, focused, dndState }) => {
+export const GridEntry: React.FC<FileEntryProps> = React.memo(({ file, selected, focused, renaming, dndState }) => {
   const isDirectory = FileHelper.isDirectory(file);
-  const entryState = useFileEntryState(file, selected, focused);
+  const entryState = useFileEntryState(file, selected, focused, renaming);
 
   const classes = useFileEntryStyles(entryState);
   const fileEntryHtmlProps = useFileEntryHtmlProps(file);
@@ -24,7 +24,7 @@ export const GridEntry: React.FC<FileEntryProps> = React.memo(({ file, selected,
         <GridEntryPreviewFile className={classes.gridFileEntryPreview} entryState={entryState} dndState={dndState} />
       )}
       <div className={classes.gridFileEntryNameContainer}>
-        <FileEntryName className={classes.gridFileEntryName} file={file} />
+        <FileEntryName file={file} renaming={renaming} className={classes.gridFileEntryName} />
       </div>
     </div>
   );
@@ -44,15 +44,15 @@ const useFileEntryStyles = makeLocalChonkyStyles((theme) => ({
     fontSize: theme.gridFileEntry.fontSize,
     wordBreak: 'break-word',
     textAlign: 'center',
-    paddingTop: 5,
-    overflow: 'hidden',
-    'text-wrap': theme.gridFileEntry.textWrap,
-    'text-overflow': 'ellipsis',
+    margin: '5px auto auto auto',
+    backgroundColor: (state: FileEntryState) => (state.selected && !state.renaming ? 'rgba(0,153,255, .25)' : 'transparent'),
+    borderRadius: 3,
+    width: 'fit-content',
+    maxWidth: '100%',
   },
   gridFileEntryName: {
-    backgroundColor: (state: FileEntryState) => (state.selected ? 'rgba(0,153,255, .25)' : 'transparent'),
     textDecoration: (state: FileEntryState) => (state.focused ? 'underline' : 'none'),
-    borderRadius: 3,
+    textWrap: theme.gridFileEntry.textWrap,
     padding: [2, 4],
   },
 }));

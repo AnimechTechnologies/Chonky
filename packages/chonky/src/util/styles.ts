@@ -111,6 +111,12 @@ export const lightTheme = {
     width: '100%',
     zIndex: 11,
   },
+
+  fileRenamingInputField: {
+    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    border: 'solid 1px rgba(0, 0, 0, 0.25)',
+    borderRadius: 3,
+  },
 };
 
 export type ChonkyTheme = typeof lightTheme;
@@ -120,6 +126,11 @@ export const darkThemeOverride: DeepPartial<ChonkyTheme> = {
     fileColorTint: 'rgba(50, 50, 50, 0.4)',
     folderBackColorTint: 'rgba(50, 50, 50, 0.4)',
     folderFrontColorTint: 'rgba(50, 50, 50, 0.15)',
+  },
+
+  fileRenamingInputField: {
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    border: 'solid 1px rgba(255, 255, 255, 0.25)',
   },
 };
 
