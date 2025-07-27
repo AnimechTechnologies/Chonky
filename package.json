@@ -9,5 +9,8 @@
     "name": "Timur Kuzhagaliyev",
     "email": "tim.kuzh@gmail.com",
     "url": "https://foxypanda.me/"
+  },
+  "volta": {
+    "node": "20.19.4"
   }
 }
