@@ -38,7 +38,7 @@ export const EssentialActions = {
       __payloadType: {} as MouseClickFilePayload,
     } as const,
     ({ payload, reduxDispatch, getReduxState }) => {
-      const { file, fileDisplayIndex } = payload;
+      const { file, fileDisplayIndex, ctrlKey, shiftKey } = payload;
       const fileId = file.id;
 
       if (payload.clickType === 'double') {
@@ -65,13 +65,15 @@ export const EssentialActions = {
         const lastClick = selectors.getLastClick(state);
 
         if (
+          !ctrlKey &&
+          !shiftKey &&
           FileHelper.isRenamable(file) &&
           payload?.target.dataset.chonkyFileEntryName && // Check if the click target is the file entry name
           (disableSelection ? lastClick?.fileId === fileId : isFileSelected && selectionSize === 1)
         ) {
           reduxDispatch(reduxActions.startRenaming(fileId));
         } else if (FileHelper.isSelectable(file) && !disableSelection) {
-          if (payload.ctrlKey) {
+          if (ctrlKey) {
             // Multiple selection
             reduxDispatch(
               reduxActions.selectFile({
@@ -86,7 +88,7 @@ export const EssentialActions = {
                 fileId: fileId,
               }),
             );
-          } else if (payload.shiftKey) {
+          } else if (shiftKey) {
             // Range selection
 
             const lastClickIndex = lastClick?.index;
