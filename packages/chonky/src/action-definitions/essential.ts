@@ -20,6 +20,7 @@ import {
   OpenFilesPayload,
   RenameFilePayload,
   StartDragNDropPayload,
+  StartRenamingFilePayload,
 } from '../types/action-payloads.types';
 import { ChonkyIconName } from '../types/icons.types';
 import { FileHelper } from '../util/file-helper';
@@ -71,7 +72,11 @@ export const EssentialActions = {
           payload?.target.dataset.chonkyFileEntryName && // Check if the click target is the file entry name
           (disableSelection ? lastClick?.fileId === fileId : isFileSelected && selectionSize === 1)
         ) {
-          reduxDispatch(reduxActions.startRenaming(fileId));
+          reduxDispatch(
+            thunkRequestFileAction(EssentialActions.StartRenamingFile, {
+              fileId,
+            }),
+          );
         } else if (FileHelper.isSelectable(file) && !disableSelection) {
           if (ctrlKey) {
             // Multiple selection
@@ -254,13 +259,35 @@ export const EssentialActions = {
     __payloadType: {} as MoveFilesPayload,
   } as const),
   /**
-   * Action that is dispatched when user renames a file,
-   * usually by clicking on the file name of the last selected file.
+   * Action that is dispatched after user finished renaming a file,
+   * usually by pressing enter or the input field losing focus.
    */
   RenameFile: defineFileAction({
     id: 'rename_file',
     __payloadType: {} as RenameFilePayload,
   } as const),
+  /**
+   * Action that is dispatched when user begins renaming a file,
+   * usually by clicking on the file name of a single selected file.
+   */
+  StartRenamingFile: defineFileAction(
+    {
+      id: 'start_renaming_file',
+      __payloadType: {} as StartRenamingFilePayload,
+    } as const,
+    ({ payload, reduxDispatch, getReduxState }) => {
+      const { fileId } = payload as StartRenamingFilePayload;
+      const file = getFileData(getReduxState(), fileId);
+      if (file && FileHelper.isRenamable(file)) {
+        reduxDispatch(reduxActions.startRenaming(fileId));
+      } else {
+        Logger.warn(
+          `Start renaming file action was triggered for file that is ` +
+            `not renamable. This may indicate a bug in internal components.`,
+        );
+      }
+    },
+  ),
   /**
    * Action that is dispatched when the selection changes for any reason.
    */

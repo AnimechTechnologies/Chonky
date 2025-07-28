@@ -37,6 +37,7 @@ export type EndDragNDropPayload = StartDragNDropPayload & {
 export type MoveFilesPayload = EndDragNDropPayload & { files: FileData[] };
 
 export type RenameFilePayload = { file: FileData; targetName: string };
+export type StartRenamingFilePayload = { fileId: string; };
 
 export type ChangeSelectionPayload = { selection: Set<string> };
 

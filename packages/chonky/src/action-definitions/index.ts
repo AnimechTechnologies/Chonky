@@ -17,6 +17,7 @@ export const EssentialFileActions = [
   ChonkyActions.EndDragNDrop,
   ChonkyActions.MoveFiles,
   ChonkyActions.RenameFile,
+  ChonkyActions.StartRenamingFile,
   ChonkyActions.ChangeSelection,
   ChonkyActions.OpenFiles,
   ChonkyActions.OpenParentFolder,
@@ -27,6 +28,7 @@ export const DefaultFileActions = [
   ChonkyActions.OpenSelection,
   ChonkyActions.SelectAllFiles,
   ChonkyActions.ClearSelection,
+  ChonkyActions.StartRenamingSelection,
   ChonkyActions.EnableListView,
   // TODO: Don't enable until compact view is fully supported
   // ChonkyActions.EnableCompactView,
