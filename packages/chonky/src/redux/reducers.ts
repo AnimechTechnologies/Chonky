@@ -175,19 +175,19 @@ const reducers = {
     if (!state.contextMenuConfig) return;
     state.contextMenuConfig = null;
   },
-  setRenamingDisabled(state: RootState, action: PayloadAction<boolean>) {
-    state.disableRenaming = action.payload;
-    state.renamingFileId = null;
-  },
-  startRenaming(state: RootState, action: PayloadAction<{ fileId: string }>) {
+  startRenaming(state: RootState, action: PayloadAction<string>) {
     if (state.disableRenaming) return;
-    const fileId = action.payload.fileId;
+    const fileId = action.payload;
     const file = state.fileMap[fileId];
     if (FileHelper.isRenamable(file)) {
       state.renamingFileId = fileId;
     }
   },
   stopRenaming(state: RootState) {
+    state.renamingFileId = null;
+  },
+  setRenamingDisabled(state: RootState, action: PayloadAction<boolean>) {
+    state.disableRenaming = action.payload;
     state.renamingFileId = null;
   },
 };

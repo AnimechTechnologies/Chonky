@@ -65,11 +65,7 @@ export const EssentialActions = {
         const isTargetFileEntryName = payload?.target.dataset.chonkyFileEntryName;
         if (isTargetFileEntryName && lastClick?.fileId === fileId && (disableSelection || isFileSelected)) {
           if (FileHelper.isRenamable(file)) {
-            reduxDispatch(
-              reduxActions.startRenaming({
-                fileId: fileId,
-              }),
-            );
+            reduxDispatch(reduxActions.startRenaming(fileId));
           }
         } else if (FileHelper.isSelectable(file) && !disableSelection) {
           if (payload.ctrlKey) {
