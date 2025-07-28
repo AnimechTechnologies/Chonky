@@ -39,10 +39,10 @@ export const EssentialActions = {
       __payloadType: {} as MouseClickFilePayload,
     } as const,
     ({ payload, reduxDispatch, getReduxState }) => {
-      const { file, fileDisplayIndex, ctrlKey, shiftKey } = payload;
+      const { file, fileDisplayIndex, clickType, ctrlKey, shiftKey, targetElement } = payload as MouseClickFilePayload;
       const fileId = file.id;
 
-      if (payload.clickType === 'double') {
+      if (clickType === 'double') {
         if (FileHelper.isOpenable(file)) {
           reduxDispatch(
             thunkRequestFileAction(ChonkyActions.OpenFiles, {
@@ -69,7 +69,8 @@ export const EssentialActions = {
           !ctrlKey &&
           !shiftKey &&
           FileHelper.isRenamable(file) &&
-          payload?.target.dataset.chonkyFileEntryName && // Check if the click target is the file entry name
+          targetElement instanceof HTMLElement &&
+          targetElement.dataset.chonkyFileEntryName && // Check if the click target is the file entry name
           (disableSelection ? lastClick?.fileId === fileId : isFileSelected && selectionSize === 1)
         ) {
           reduxDispatch(
@@ -151,7 +152,7 @@ export const EssentialActions = {
             );
           }
         } else {
-          if (!payload.ctrlKey && !disableSelection) {
+          if (!ctrlKey && !disableSelection) {
             reduxDispatch(reduxActions.clearSelection());
           }
           reduxDispatch(

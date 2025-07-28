@@ -9,7 +9,7 @@ export interface MouseClickFilePayload {
   ctrlKey: boolean;
   shiftKey: boolean;
   clickType: 'single' | 'double';
-  target: EventTarget;
+  targetElement: EventTarget;
 }
 
 export interface KeyboardClickFilePayload {

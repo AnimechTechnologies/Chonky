@@ -135,7 +135,7 @@ export const useFileClickHandlers = (file: Nullable<FileData>, displayIndex: num
           altKey: event.altKey,
           ctrlKey: event.ctrlKey,
           shiftKey: event.shiftKey,
-          target: event.target,
+          targetElement: event.target,
         }),
       );
     },
