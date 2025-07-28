@@ -4,7 +4,7 @@
  * @license MIT
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Nullable } from 'tsdef';
 import { useDispatch } from 'react-redux';
 import TextField from '@mui/material/TextField';
@@ -26,15 +26,14 @@ export interface FileEntryNameProps {
 export const FileEntryName: React.FC<FileEntryNameProps> = React.memo(({ file, renaming, className }) => {
   const modifierIconComponents = useModifierIconComponents(file);
   const fileNameComponent = useFileNameComponent(file);
-  const [renamedValue, setRenamedValue] = useState('');
+  const [renamedValue, setRenamedValue] = useState(file?.name ?? '');
   const dispatch: ChonkyDispatch = useDispatch();
 
   useEffect(() => {
     setRenamedValue(file?.name ?? '');
   }, [file, renaming]);
 
-  const stopRenaming = (saveChanges: boolean) => {
-    dispatch(reduxActions.stopRenaming());
+  const stopRenaming = useCallback((saveChanges: boolean) => {
     if (saveChanges && file && file.name !== renamedValue) {
       dispatch(
         thunkRequestFileAction(ChonkyActions.RenameFile, {
@@ -43,7 +42,8 @@ export const FileEntryName: React.FC<FileEntryNameProps> = React.memo(({ file, r
         }),
       );
     }
-  };
+    dispatch(reduxActions.stopRenaming());
+  }, [dispatch, file, renamedValue]);
 
   const classes = useStyles();
 
