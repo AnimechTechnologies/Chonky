@@ -72,8 +72,10 @@ export const FileEntryName: React.FC<FileEntryNameProps> = React.memo(({ file, r
       const isEscapeKey = event.key === 'Escape';
       if (isEnterKey || isEscapeKey) {
         stopRenaming(isEnterKey);
-        event.currentTarget.blur(); // Avoid issues with focus state
         event.stopPropagation(); // Prevent key from triggering file action
+        if (event.target instanceof HTMLInputElement) {
+          event.target.blur(); // Avoid issues with focus state
+        }
       }
     },
     [stopRenaming],
