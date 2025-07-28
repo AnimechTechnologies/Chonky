@@ -59,14 +59,16 @@ export const EssentialActions = {
 
         const disableSimpleDeselection = selectDisableSimpleDeselection(getReduxState());
         const disableSelection = selectDisableSelection(getReduxState());
+        const selectionSize = selectSelectionSize(getReduxState());
         const isFileSelected = getIsFileSelected(getReduxState(), file);
         const lastClick = selectors.getLastClick(getReduxState());
 
-        const isTargetFileEntryName = payload?.target.dataset.chonkyFileEntryName;
-        if (isTargetFileEntryName && lastClick?.fileId === fileId && (disableSelection || isFileSelected)) {
-          if (FileHelper.isRenamable(file)) {
-            reduxDispatch(reduxActions.startRenaming(fileId));
-          }
+        if (
+          FileHelper.isRenamable(file) &&
+          payload?.target.dataset.chonkyFileEntryName && // Check if the click target is the file entry name
+          (disableSelection ? lastClick?.fileId === fileId : isFileSelected && selectionSize === 1)
+        ) {
+          reduxDispatch(reduxActions.startRenaming(fileId));
         } else if (FileHelper.isSelectable(file) && !disableSelection) {
           if (payload.ctrlKey) {
             // Multiple selection
