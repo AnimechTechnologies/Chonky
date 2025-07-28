@@ -80,6 +80,28 @@ export const DefaultActions = {
     }) as FileSelectionTransform,
   } as const),
   /**
+   * Action that can be used to start renaming last selected file.
+   */
+  StartRenamingSelection: defineFileAction(
+    {
+      id: 'start_renaming_selection',
+      hotkeys: ['f2'],
+      requiresSelection: true,
+      fileFilter: FileHelper.isRenamable,
+    } as const,
+    ({ state, reduxDispatch }) => {
+      const selectedFiles = state.selectedFilesForAction!;
+      if (selectedFiles.length >= 1) {
+        const fileId = selectedFiles[selectedFiles.length - 1].id;
+        reduxDispatch(
+          thunkRequestFileAction(EssentialActions.StartRenamingFile, {
+            fileId,
+          }),
+        );
+      }
+    },
+  ),
+  /**
    * Action that enables List view.
    */
   EnableListView: defineFileAction({
