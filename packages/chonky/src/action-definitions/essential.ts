@@ -189,8 +189,8 @@ export const EssentialActions = {
         reduxDispatch(
           reduxActions.selectFile({
             fileId: payload.file.id,
-            exclusive: payload.ctrlKey,
-            toggle: !selectDisableSimpleDeselection(getReduxState()),
+            exclusive: false,
+            toggle: payload.ctrlKey || !selectDisableSimpleDeselection(getReduxState()),
           }),
         );
       }
