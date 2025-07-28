@@ -11,6 +11,7 @@ import { I18nConfig } from './i18n.types';
 import { ChonkyIconProps } from './icons.types';
 import { ChonkyTheme } from '../util/styles';
 import { CancelSearchCallback, SearchInputCallback, SearchPredicate } from './search.types';
+import { RenamingSanitizer } from './rename.types';
 
 /**
  * File browser methods exposed to developers via the `FileBrowser` ref.
@@ -154,6 +155,12 @@ export interface FileBrowserProps {
    * Useful when you want to provide your own `react-dnd` context.
    */
   disableDragAndDropProvider?: boolean;
+
+  /**
+   * Sanitizer to use when renaming files. This function will be called while typing
+   * in the rename input field, and it should return a sanitized version of the name
+   */
+  renamingSanitizer: Nullable<RenamingSanitizer>;
 
   /**
    * The flag that completely disables file renaming functionality.

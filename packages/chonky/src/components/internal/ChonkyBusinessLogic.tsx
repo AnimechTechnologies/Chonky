@@ -71,6 +71,7 @@ export const ChonkyBusinessLogicInner = React.memo(
     useDTE(reduxActions.onSearchInput, getValueOrFallback(props.onSearchInput, defaultConfig.onSearchInput));
     useDTE(reduxActions.onCancelSearch, getValueOrFallback(props.onCancelSearch, defaultConfig.onCancelSearch));
     useDTE(reduxActions.searchPredicate, getValueOrFallback(props.searchPredicate, defaultConfig.searchPredicate));
+    useDTE(reduxActions.renamingSanitizer, getValueOrFallback(props.renamingSanitizer, defaultConfig.renamingSanitizer));
     useDTE(
       reduxActions.setRenamingDisabled,
       getValueOrFallback(props.disableRenaming, defaultConfig.disableRenaming, 'boolean'),

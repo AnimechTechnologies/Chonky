@@ -1,5 +1,4 @@
 import { Nilable, Nullable } from 'tsdef';
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { GenericFileActionHandler } from '../types/action-handler.types';
@@ -11,10 +10,11 @@ import { FileArray, FileIdTrueMap, FileMap } from '../types/file.types';
 import { OptionMap } from '../types/options.types';
 import { RootState } from '../types/redux.types';
 import { SortOrder } from '../types/sort.types';
+import { CancelSearchCallback, SearchPredicate, SearchInputCallback } from '../types/search.types';
+import { RenamingSanitizer } from '../types/rename.types';
 import { FileHelper } from '../util/file-helper';
 import { sanitizeInputArray } from './files-transforms';
 import { initialRootState } from './state';
-import { CancelSearchCallback, SearchPredicate, SearchInputCallback } from '../types/search.types';
 
 const reducers = {
   setExternalFileActionHandler(state: RootState, action: PayloadAction<Nilable<GenericFileActionHandler<FileAction>>>) {
@@ -108,7 +108,7 @@ const reducers = {
       .filter((id) => id && FileHelper.isSelectable(state.fileMap[id]))
       .map((id) => (state.selectionMap[id] = true));
   },
-  selectFile(state: RootState, action: PayloadAction<{ fileId: string; exclusive: boolean, toggle: boolean }>) {
+  selectFile(state: RootState, action: PayloadAction<{ fileId: string; exclusive: boolean; toggle: boolean }>) {
     if (state.disableSelection) return;
     const oldValue = action.payload.toggle && !!state.selectionMap[action.payload.fileId];
     if (action.payload.exclusive) state.selectionMap = {};
@@ -185,6 +185,9 @@ const reducers = {
   },
   stopRenaming(state: RootState) {
     state.renamingFileId = null;
+  },
+  renamingSanitizer(state: RootState, action: PayloadAction<Nullable<RenamingSanitizer>>) {
+    state.renamingSanitizer = action.payload;
   },
   setRenamingDisabled(state: RootState, action: PayloadAction<boolean>) {
     state.disableRenaming = action.payload;

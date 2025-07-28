@@ -12,6 +12,7 @@ import { OptionMap } from './options.types';
 import { FileSelection } from './selection.types';
 import { SortOrder } from './sort.types';
 import { CancelSearchCallback, SearchPredicate, SearchInputCallback } from './search.types';
+import { RenamingSanitizer } from './rename.types';
 
 export type RootState = {
   instanceId: string;
@@ -82,6 +83,7 @@ export type RootState = {
 
   // Renaming
   renamingFileId: Nullable<string>;
+  renamingSanitizer: Nullable<RenamingSanitizer>;
   disableRenaming: boolean;
 };
 

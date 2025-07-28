@@ -58,5 +58,6 @@ export const initialRootState: RootState = {
   contextMenuConfig: null,
 
   renamingFileId: null,
+  renamingSanitizer: null,
   disableRenaming: false,
 };

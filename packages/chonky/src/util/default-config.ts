@@ -24,6 +24,7 @@ export type ChonkyConfig = Pick<
   | 'iconComponent'
   | 'darkMode'
   | 'i18n'
+  | 'renamingSanitizer'
   | 'disableRenaming'
 >;
 
@@ -47,6 +48,7 @@ export const defaultConfig: ChonkyConfig = {
   iconComponent: ChonkyIconPlaceholder,
   darkMode: false,
   i18n: {},
+  renamingSanitizer: null,
   disableRenaming: false,
 };
 

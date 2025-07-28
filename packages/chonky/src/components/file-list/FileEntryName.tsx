@@ -6,12 +6,13 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { Nullable } from 'tsdef';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import TextField from '@mui/material/TextField';
 
 import { FileData } from '../../types/file.types';
 import { ChonkyDispatch } from '../../types/redux.types';
 import { reduxActions } from '../../redux/reducers';
+import { selectRenamingSanitizer } from '../../redux/selectors';
 import { thunkRequestFileAction } from '../../redux/thunks/dispatchers.thunks';
 import { ChonkyActions } from '../../action-definitions';
 import { makeLocalChonkyStyles } from '../../util/styles';
@@ -33,17 +34,50 @@ export const FileEntryName: React.FC<FileEntryNameProps> = React.memo(({ file, r
     setRenamedValue(file?.name ?? '');
   }, [file, renaming]);
 
-  const stopRenaming = useCallback((saveChanges: boolean) => {
-    if (saveChanges && file && file.name !== renamedValue) {
-      dispatch(
-        thunkRequestFileAction(ChonkyActions.RenameFile, {
-          file,
-          targetName: renamedValue,
-        }),
-      );
-    }
-    dispatch(reduxActions.stopRenaming());
-  }, [dispatch, file, renamedValue]);
+  const renamingSanitizer = useSelector(selectRenamingSanitizer);
+  const onRenamingChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const element = event.target;
+      let value = element.value;
+      if (file && renamingSanitizer) {
+        value = renamingSanitizer(value, file, element);
+      }
+      setRenamedValue(value);
+    },
+    [file, setRenamedValue, renamingSanitizer],
+  );
+
+  const stopRenaming = useCallback(
+    (saveChanges: boolean) => {
+      if (saveChanges && file && file.name !== renamedValue) {
+        dispatch(
+          thunkRequestFileAction(ChonkyActions.RenameFile, {
+            file,
+            targetName: renamedValue,
+          }),
+        );
+      }
+      dispatch(reduxActions.stopRenaming());
+    },
+    [dispatch, file, renamedValue],
+  );
+
+  const onRenamingBlur = useCallback(() => {
+    stopRenaming(true);
+  }, [stopRenaming]);
+
+  const onRenamingKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      const isEnterKey = event.key === 'Enter';
+      const isEscapeKey = event.key === 'Escape';
+      if (isEnterKey || isEscapeKey) {
+        stopRenaming(isEnterKey);
+        event.currentTarget.blur(); // Avoid issues with focus state
+        event.stopPropagation(); // Prevent key from triggering file action
+      }
+    },
+    [stopRenaming],
+  );
 
   const classes = useStyles();
 
@@ -54,20 +88,11 @@ export const FileEntryName: React.FC<FileEntryNameProps> = React.memo(({ file, r
       autoFocus
       variant="standard"
       size="small"
-      onChange={(e) => setRenamedValue(e.target.value)}
-      onBlur={() => stopRenaming(true)}
-      onFocus={(e) => e.target.select()}
-      onClick={(e) => e.stopPropagation()} // Prevent click from triggering file selection
-      onKeyDown={(e) => {
-        const isEnterKey = e.key === 'Enter';
-        const isEscapeKey = e.key === 'Escape';
-        if (isEnterKey || isEscapeKey) {
-          stopRenaming(isEnterKey);
-          const input = e.target as HTMLInputElement; // Typings inaccurately claim target is HTMLDivElement
-          input.blur(); // Avoid issues with focus state
-          e.stopPropagation(); // Prevent key from triggering file action
-        }
-      }}
+      onChange={onRenamingChange}
+      onBlur={onRenamingBlur}
+      onFocus={(event) => event.target.select()}
+      onClick={(event) => event.stopPropagation()} // Prevent click from triggering file selection
+      onKeyDown={onRenamingKeyDown}
       inputProps={{
         style: {
           textAlign: 'inherit',
