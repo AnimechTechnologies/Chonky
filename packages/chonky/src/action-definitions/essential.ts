@@ -57,11 +57,12 @@ export const EssentialActions = {
       } else {
         // We're dealing with a single click
 
-        const disableSimpleDeselection = selectDisableSimpleDeselection(getReduxState());
-        const disableSelection = selectDisableSelection(getReduxState());
-        const selectionSize = selectSelectionSize(getReduxState());
-        const isFileSelected = getIsFileSelected(getReduxState(), file);
-        const lastClick = selectors.getLastClick(getReduxState());
+        const state = getReduxState();
+        const disableSimpleDeselection = selectDisableSimpleDeselection(state);
+        const disableSelection = selectDisableSelection(state);
+        const selectionSize = selectSelectionSize(state);
+        const isFileSelected = getIsFileSelected(state, file);
+        const lastClick = selectors.getLastClick(state);
 
         if (
           FileHelper.isRenamable(file) &&
@@ -82,7 +83,7 @@ export const EssentialActions = {
             reduxDispatch(
               reduxActions.setLastClickIndex({
                 index: fileDisplayIndex,
-                fileId: payload.fileId,
+                fileId: fileId,
               }),
             );
           } else if (payload.shiftKey) {
