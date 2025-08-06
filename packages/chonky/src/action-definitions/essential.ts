@@ -195,14 +195,6 @@ export const EssentialActions = {
             }),
           );
         }
-      } else if (payload.spaceKey && FileHelper.isSelectable(payload.file)) {
-        reduxDispatch(
-          reduxActions.selectFile({
-            fileId: payload.file.id,
-            exclusive: false,
-            toggle: payload.ctrlKey || !selectDisableSimpleDeselection(getReduxState()),
-          }),
-        );
       }
     },
   ),

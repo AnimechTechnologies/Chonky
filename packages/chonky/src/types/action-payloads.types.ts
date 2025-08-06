@@ -16,7 +16,6 @@ export interface KeyboardClickFilePayload {
   file: FileData;
   fileDisplayIndex: number;
   enterKey: boolean;
-  spaceKey: boolean;
   altKey: boolean;
   ctrlKey: boolean;
   shiftKey: boolean;

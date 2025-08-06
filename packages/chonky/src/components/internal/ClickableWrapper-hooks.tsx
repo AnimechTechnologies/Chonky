@@ -69,14 +69,13 @@ export const useKeyDownHandler = (onKeyboardClick?: KeyboardClickEventHandler) =
       if (!onKeyboardClick) return;
 
       const keyboardClickEvent: KeyboardClickEvent = {
-        enterKey: event.nativeEvent.code === 'Enter',
-        spaceKey: event.nativeEvent.code === 'Space',
+        enterKey: event.key === 'Enter',
         altKey: event.altKey,
         ctrlKey: event.ctrlKey,
         shiftKey: event.shiftKey,
       };
 
-      if (keyboardClickEvent.spaceKey || keyboardClickEvent.enterKey) {
+      if (keyboardClickEvent.enterKey) {
         event.preventDefault();
         event.stopPropagation();
         onKeyboardClick(keyboardClickEvent);

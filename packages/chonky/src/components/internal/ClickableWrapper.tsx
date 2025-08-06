@@ -19,7 +19,6 @@ export type MouseClickEventHandler = (event: MouseClickEvent) => void;
 
 export interface KeyboardClickEvent {
   enterKey: boolean;
-  spaceKey: boolean;
   altKey: boolean;
   ctrlKey: boolean;
   shiftKey: boolean;

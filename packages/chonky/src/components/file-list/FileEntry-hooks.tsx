@@ -150,7 +150,6 @@ export const useFileClickHandlers = (file: Nullable<FileData>, displayIndex: num
           file,
           fileDisplayIndex: displayIndex,
           enterKey: event.enterKey,
-          spaceKey: event.spaceKey,
           altKey: event.altKey,
           ctrlKey: event.ctrlKey,
           shiftKey: event.shiftKey,
