@@ -183,7 +183,7 @@ const reducers = {
       state.renamingFileId = fileId;
     }
   },
-  stopRenaming(state: RootState) {
+  endRenaming(state: RootState) {
     state.renamingFileId = null;
   },
   renamingSanitizer(state: RootState, action: PayloadAction<Nullable<RenamingSanitizer>>) {

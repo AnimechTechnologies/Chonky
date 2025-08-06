@@ -22,6 +22,7 @@ import {
   RenameFilePayload,
   StartDragNDropPayload,
   StartRenamingFilePayload,
+  EndRenamingFilePayload,
 } from '../types/action-payloads.types';
 import { ChonkyIconName } from '../types/icons.types';
 import { FileHelper } from '../util/file-helper';
@@ -261,22 +262,15 @@ export const EssentialActions = {
     __payloadType: {} as MoveFilesPayload,
   } as const),
   /**
-   * Action that is dispatched after user finished renaming a file,
-   * usually by pressing enter or the input field losing focus.
+   * Action that is dispatched after user finishes renaming a file,
+   * usually by pressing Enter or the input field loses focus.
    */
-  RenameFile: defineFileAction(
-    {
-      id: 'rename_file',
-      __payloadType: {} as RenameFilePayload,
-    } as const,
-    ({ payload, getReduxState }) => {
-      const { file } = payload as RenameFilePayload;
-      const renamingFileId = selectRenamingFileId(getReduxState());
-      return file.id !== renamingFileId; // Prevent the action if the file is not being renamed
-    },
-  ),
+  RenameFile: defineFileAction({
+    id: 'rename_file',
+    __payloadType: {} as RenameFilePayload,
+  } as const),
   /**
-   * Action that is dispatched when user begins renaming a file,
+   * Action that is dispatched when user starts renaming a file,
    * usually by clicking on the file name of a single selected file.
    */
   StartRenamingFile: defineFileAction(
@@ -287,13 +281,41 @@ export const EssentialActions = {
     ({ payload, reduxDispatch, getReduxState }) => {
       const { fileId } = payload as StartRenamingFilePayload;
       const file = getFileData(getReduxState(), fileId);
-      if (file && FileHelper.isRenamable(file)) {
+      if (FileHelper.isRenamable(file)) {
         reduxDispatch(reduxActions.startRenaming(fileId));
       } else {
         Logger.warn(
           `Start renaming file action was triggered for file that is ` +
             `not renamable. This may indicate a bug in internal components.`,
         );
+      }
+    },
+  ),
+  /**
+   * Action that is dispatched when user either cancels the renaming,
+   * or save the new target name.
+   */
+  EndRenamingFile: defineFileAction(
+    {
+      id: 'end_renaming_file',
+      __payloadType: {} as EndRenamingFilePayload,
+    } as const,
+    ({ payload, reduxDispatch, getReduxState }) => {
+      const renamingFileId = selectRenamingFileId(getReduxState());
+      if (renamingFileId) {
+        const { targetName } = payload as EndRenamingFilePayload;
+        if (targetName) {
+          const file = getFileData(getReduxState(), renamingFileId);
+          if (FileHelper.isRenamable(file) && file.name !== targetName) {
+            reduxDispatch(
+              thunkRequestFileAction(ChonkyActions.RenameFile, {
+                file: file,
+                targetName: targetName,
+              }),
+            );
+          }
+        }
+        reduxDispatch(reduxActions.endRenaming());
       }
     },
   ),

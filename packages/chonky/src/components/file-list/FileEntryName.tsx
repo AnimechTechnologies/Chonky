@@ -47,38 +47,35 @@ export const FileEntryName: React.FC<FileEntryNameProps> = React.memo(({ file, r
     [file, setRenamedValue, renamingSanitizer],
   );
 
-  const stopRenaming = useCallback(
+  const endRenaming = useCallback(
     (saveChanges: boolean) => {
-      if (saveChanges && file && file.name !== renamedValue) {
-        dispatch(
-          thunkRequestFileAction(ChonkyActions.RenameFile, {
-            file,
-            targetName: renamedValue,
-          }),
-        );
-      }
-      dispatch(reduxActions.stopRenaming());
+      const targetName = saveChanges ? renamedValue : undefined;
+      dispatch(
+        thunkRequestFileAction(ChonkyActions.EndRenamingFile, {
+          targetName,
+        }),
+      );
     },
     [dispatch, file, renamedValue],
   );
 
   const onRenamingBlur = useCallback(() => {
-    stopRenaming(true);
-  }, [stopRenaming]);
+    endRenaming(true);
+  }, [endRenaming]);
 
   const onRenamingKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       const isEnterKey = event.key === 'Enter';
       const isEscapeKey = event.key === 'Escape';
       if (isEnterKey || isEscapeKey) {
-        stopRenaming(isEnterKey);
+        endRenaming(isEnterKey);
         event.stopPropagation(); // Prevent key from triggering file action
         if (event.target instanceof HTMLInputElement) {
           event.target.blur(); // Avoid issues with focus state
         }
       }
     },
-    [stopRenaming],
+    [endRenaming],
   );
 
   const classes = useStyles();

@@ -18,6 +18,7 @@ export const EssentialFileActions = [
   ChonkyActions.MoveFiles,
   ChonkyActions.RenameFile,
   ChonkyActions.StartRenamingFile,
+  ChonkyActions.EndRenamingFile,
   ChonkyActions.ChangeSelection,
   ChonkyActions.OpenFiles,
   ChonkyActions.OpenParentFolder,
