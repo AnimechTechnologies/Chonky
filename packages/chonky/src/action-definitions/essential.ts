@@ -296,7 +296,7 @@ export const EssentialActions = {
       const renamingFileId = selectRenamingFileId(getReduxState());
       if (renamingFileId) {
         const { targetName } = payload as EndRenamingFilePayload;
-        if (targetName) {
+        if (targetName !== undefined) {
           const file = getFileData(getReduxState(), renamingFileId);
           if (FileHelper.isRenamable(file) && file.name !== targetName) {
             reduxDispatch(
