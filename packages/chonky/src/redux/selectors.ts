@@ -91,8 +91,9 @@ export const selectContextMenuTriggerFile = (state: RootState) => {
   return fileMap[config.triggerFileId] ?? null;
 };
 
+export const selectRenamingFileId = (state: RootState) => state.renamingFileId;
 export const selectIsFileRenaming = (fileId: Nullable<string>) => (state: RootState) =>
-  !!fileId && state.renamingFileId === fileId;
+  !!fileId && selectRenamingFileId(state) === fileId;
 
 export const selectRenamingSanitizer = (state: RootState) => state.renamingSanitizer;
 

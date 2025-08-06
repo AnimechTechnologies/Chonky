@@ -4,6 +4,7 @@ import {
   getIsFileSelected,
   selectDisableSelection,
   selectDisableSimpleDeselection,
+  selectRenamingFileId,
   selectors,
   selectParentFolder,
   selectSelectionSize,
@@ -263,10 +264,17 @@ export const EssentialActions = {
    * Action that is dispatched after user finished renaming a file,
    * usually by pressing enter or the input field losing focus.
    */
-  RenameFile: defineFileAction({
-    id: 'rename_file',
-    __payloadType: {} as RenameFilePayload,
-  } as const),
+  RenameFile: defineFileAction(
+    {
+      id: 'rename_file',
+      __payloadType: {} as RenameFilePayload,
+    } as const,
+    ({ payload, getReduxState }) => {
+      const { file } = payload as RenameFilePayload;
+      const renamingFileId = selectRenamingFileId(getReduxState());
+      return file.id !== renamingFileId; // Prevent the action if the file is not being renamed
+    },
+  ),
   /**
    * Action that is dispatched when user begins renaming a file,
    * usually by clicking on the file name of a single selected file.
