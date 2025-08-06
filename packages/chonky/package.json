@@ -1,6 +1,6 @@
 {
   "name": "@animech-public/chonky",
-  "version": "0.14.4",
+  "version": "0.14.5",
   "description": "A File Browser component for React",
   "license": "MIT",
   "main": "dist/index.js",
