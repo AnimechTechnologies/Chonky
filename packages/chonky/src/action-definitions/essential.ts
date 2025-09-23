@@ -392,6 +392,9 @@ export const EssentialActions = {
             reduxDispatch(reduxActions.clearSelection());
           }
         }
+      } else {
+        // clear selection if no trigger file
+        reduxDispatch(reduxActions.clearSelection());
       }
 
       reduxDispatch(
