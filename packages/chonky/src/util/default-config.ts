@@ -26,6 +26,7 @@ export type ChonkyConfig = Pick<
   | 'i18n'
   | 'renamingSanitizer'
   | 'disableRenaming'
+  | 'selectedFileIds'
 >;
 
 export const defaultConfig: ChonkyConfig = {
@@ -50,6 +51,7 @@ export const defaultConfig: ChonkyConfig = {
   i18n: {},
   renamingSanitizer: null,
   disableRenaming: false,
+  selectedFileIds: null,
 };
 
 export const setChonkyDefaults = (config: Partial<ChonkyConfig>) => {

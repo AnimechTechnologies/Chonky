@@ -66,6 +66,15 @@ export interface FileBrowserProps {
   files: FileArray;
 
   /**
+   * List of IDs of files that should be selected.
+   * Modifying file selection from the outside is normally performed
+   * by using the FileBrowserHandle API or by dispatching file actions.
+   * Specifying this prop will instantly reset any current file selection
+   * and instead select the files matching the supplied IDs.
+   */
+  selectedFileIds?: Nullable<string[]>;
+
+  /**
    * The current folder hierarchy. This should be an array of `files`, every
    * element should either be `null` or an object of `FileData` type. The first
    * element should represent the top-level directory, and the last element

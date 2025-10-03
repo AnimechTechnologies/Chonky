@@ -81,6 +81,14 @@ const reducers = {
       }
     }
   },
+  setSelectedFileIds(state: RootState, action: PayloadAction<Nullable<string[]>>) {
+    if (!action.payload) {
+      return;
+    }
+    state.selectionMap = action.payload
+      .filter((id) => id && FileHelper.isSelectable(state.fileMap[id]))
+      .reduce((prev, id) => ({ ...prev, [id]: true }), {});
+  },
   setFocusSearchInput(state: RootState, action: PayloadAction<Nullable<() => void>>) {
     state.focusSearchInput = action.payload;
   },
